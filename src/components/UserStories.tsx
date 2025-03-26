@@ -44,8 +44,12 @@ export function UserStories({ id }: UserStoriesProps) {
     }
   ];
 
-  // Create a longer sequence of stories for smoother infinite scroll
-  const duplicatedStories = [...stories, ...stories, ...stories, ...stories];
+  // Create an infinite sequence of stories
+  const duplicatedStories = [...stories, ...stories, ...stories, ...stories, ...stories, ...stories];
+  
+  const cardWidth = 280; // Base width in pixels
+  const gap = 16; // Base gap in pixels
+  const totalWidth = duplicatedStories.length * (cardWidth + gap);
 
   return (
     <section className="relative pt-[3.4375rem] px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
@@ -77,14 +81,20 @@ export function UserStories({ id }: UserStoriesProps) {
             <motion.div
               className="flex gap-4 sm:gap-5 md:gap-6"
               animate={{
-                x: [`0%`, `-${(stories.length * 100)}%`],
+                x: [-cardWidth, -totalWidth]
               }}
               transition={{
                 x: {
-                  duration: 160,
+                  duration: duplicatedStories.length * 10,
                   repeat: Infinity,
                   ease: "linear",
-                  delay: 0
+                  repeatType: "loop"
+                }
+              }}
+              onAnimationComplete={() => {
+                const firstElement = document.querySelector('[data-row="1"]');
+                if (firstElement) {
+                  firstElement.scrollLeft = 0;
                 }
               }}
             >
@@ -123,14 +133,21 @@ export function UserStories({ id }: UserStoriesProps) {
             <motion.div
               className="flex gap-4 sm:gap-5 md:gap-6"
               animate={{
-                x: [`0%`, `-${(stories.length * 100)}%`],
+                x: [-cardWidth, -totalWidth]
               }}
               transition={{
                 x: {
-                  duration: 160,
+                  duration: duplicatedStories.length * 10,
                   repeat: Infinity,
                   ease: "linear",
+                  repeatType: "loop",
                   delay: 1
+                }
+              }}
+              onAnimationComplete={() => {
+                const secondElement = document.querySelector('[data-row="2"]');
+                if (secondElement) {
+                  secondElement.scrollLeft = 0;
                 }
               }}
             >
@@ -165,10 +182,6 @@ export function UserStories({ id }: UserStoriesProps) {
               ))}
             </motion.div>
           </div>
-
-          {/* Gradient overlays for smooth transition */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-24 md:w-32 bg-gradient-to-r from-[#A3D5FF] to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-24 md:w-32 bg-gradient-to-l from-[#A3D5FF] to-transparent pointer-events-none" />
         </div>
 
         {/* Action Button */}

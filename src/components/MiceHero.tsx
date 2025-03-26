@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { NumberTicker } from '@/components/magicui/number-ticker';
+import Image from 'next/image';
 
 type Props = {
     id?: string;
@@ -35,6 +36,17 @@ export function MiceHero({ id }: Props) {
 
     return (
         <section className="relative flex justify-center w-full min-h-[calc(100vh-5rem)] bg-white">
+            {/* Pattern Background */}
+            <div className="absolute w-full max-w-[1281.99px] aspect-[1282/380] left-1/2 -translate-x-1/2 overflow-hidden">
+                <Image
+                    src="/mice-solutions/mice-patternbg.png"
+                    alt="Background pattern"
+                    fill
+                    className="object-contain"
+                    priority
+                />
+            </div>
+
             <style jsx>{`
                 .gradient-text {
                     background: linear-gradient(179.24deg, rgba(163, 213, 255, 0.2) -17.36%, #1976D2 52.97%);

@@ -11,12 +11,12 @@ export function LanguageSwitcher() {
     const isEnglish = currentLocale === 'en';
 
     // Get the path without the locale
-    const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '');
+    const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '') || '/';
 
     return (
         <div className="flex items-center space-x-2">
             <Link
-                href={`${pathWithoutLocale}`}
+                href={pathWithoutLocale}
                 locale={isEnglish ? 'ko' : 'en'}
                 className="flex items-center gap-2 px-3 py-1.5 rounded hover:bg-gray-100 transition-colors"
             >

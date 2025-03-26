@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 type Props = {
     id?: string;
@@ -14,6 +14,7 @@ type Props = {
 export function TravelPackages({ id }: Props) {
     const t = useTranslations('TravelPackages');
     const params = useParams();
+    const pathname = usePathname();
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -28,55 +29,121 @@ export function TravelPackages({ id }: Props) {
     const isMediaInView = useInView(mediaRef, { once: true });
     const isButtonsInView = useInView(buttonsRef, { once: true });
 
-    const packages = [
-        {
-            title: t('package1.title'),
-            price: t('package1.price'),
-            content: [
-                { text: t('package1.features.feature1') },
-                { text: t('package1.features.feature2') },
-                { text: t('package1.features.feature3') }
-            ],
-            imageAlt: t('package1.imageAlt'),
-            mostPopular: true,
-            button: {
-                label: t('package1.button.label'),
-                link: t('package1.button.link')
-            }
-        },
-        {
-            title: t('package2.title'),
-            price: t('package2.price'),
-            content: [
-                { text: t('package2.features.feature1') },
-                { text: t('package2.features.feature2') },
-                { text: t('package2.features.feature3') }
-            ],
-            imageAlt: t('package2.imageAlt'),
-            button: {
-                label: t('package2.button.label'),
-                link: t('package2.button.link')
-            }
-        },
-        {
-            title: t('package3.title'),
-            price: t('package3.price'),
-            content: [
-                { text: t('package3.features.feature1') },
-                { text: t('package3.features.feature2') },
-                { text: t('package3.features.feature3') }
-            ],
-            imageAlt: t('package3.imageAlt'),
-            button: {
-                label: t('package3.button.label'),
-                link: t('package3.button.link')
-            }
+    // Define different packages based on the route
+    const getPackagesByRoute = () => {
+        if (pathname.includes('la-departure')) {
+            return [
+                {
+                    title: t('laPackages.title'),
+                    price: t('laPackages.price'),
+                    content: [
+                        { text: t('laPackages.features.feature1') },
+                        { text: t('laPackages.features.feature2') },
+                        { text: t('laPackages.features.feature3') }
+                    ],
+                    imageAlt: t('laPackages.imageAlt'),
+                    mostPopular: true,
+                    button: {
+                        label: t('laPackages.button.label'),
+                        link: '/contact'
+                    },
+                    images: [
+                        '/travel-packages/city-night-la.png',
+                        '/travel-packages/palm-trees-la.png',
+                        '/travel-packages/grand-canyon.png'
+                    ]
+                }
+            ];
+        } else if (pathname.includes('las-vegas-departure')) {
+            return [
+                {
+                    title: t('vegasPackages.title'),
+                    price: t('vegasPackages.price'),
+                    content: [
+                        { text: t('vegasPackages.features.feature1') },
+                        { text: t('vegasPackages.features.feature2') },
+                        { text: t('vegasPackages.features.feature3') }
+                    ],
+                    imageAlt: t('vegasPackages.imageAlt'),
+                    mostPopular: false,
+                    button: {
+                        label: t('vegasPackages.button.label'),
+                        link: '/contact'
+                    },
+                    images: [
+                        '/travel-packages/city-night-la.png',
+                        '/travel-packages/palm-trees-la.png',
+                        '/travel-packages/grand-canyon.png'
+                    ]
+                }
+            ];
+        } else if (pathname.includes('semi-package')) {
+            return [
+                {
+                    title: t('semiPackages.title'),
+                    price: t('semiPackages.price'),
+                    content: [
+                        { text: t('semiPackages.features.feature1') },
+                        { text: t('semiPackages.features.feature2') },
+                        { text: t('semiPackages.features.feature3') }
+                    ],
+                    imageAlt: t('semiPackages.imageAlt'),
+                    mostPopular: false,
+                    button: {
+                        label: t('semiPackages.button.label'),
+                        link: '/contact'
+                    },
+                    images: [
+                        '/travel-packages/city-night-la.png',
+                        '/travel-packages/palm-trees-la.png',
+                        '/travel-packages/grand-canyon.png'
+                    ]
+                }
+            ];
         }
-    ];
+        
+        // Default packages (shown on main travel-packages page)
+        return [
+            {
+                title: t('defaultPackage.title'),
+                price: t('defaultPackage.price'),
+                content: [
+                    { text: t('defaultPackage.features.feature1') },
+                    { text: t('defaultPackage.features.feature2') },
+                    { text: t('defaultPackage.features.feature3') }
+                ],
+                imageAlt: t('defaultPackage.imageAlt'),
+                mostPopular: true,
+                button: {
+                    label: t('defaultPackage.button.label'),
+                    link: '/travel-packages'
+                },
+                images: [
+                    '/travel-packages/city-night-la.png',
+                    '/travel-packages/palm-trees-la.png',
+                    '/travel-packages/grand-canyon.png'
+                ]
+            }
+        ];
+    };
+
+    const packages = getPackagesByRoute();
+
+    const getNextRoute = () => {
+        if (pathname.includes('la-departure')) {
+            return `/travel-packages/las-vegas-departure`;
+        } else if (pathname.includes('las-vegas-departure')) {
+            return `/travel-packages/semi-package`;
+        } else if (pathname.includes('semi-package')) {
+            return `/travel-packages/la-departure`;
+        }
+        return `/travel-packages/la-departure`;
+    };
 
     const buttons = [
         {
-            label: t('viewAllButton')
+            label: t('viewAllButton'),
+            link: getNextRoute()
         }
     ];
 
@@ -85,11 +152,13 @@ export function TravelPackages({ id }: Props) {
         if (!isAutoPlaying) return;
 
         const timer = setInterval(() => {
-            setCurrentMediaIndex((prev) => (prev + 1) % packages.length);
+            const currentPackage = packages[currentCardIndex];
+            const imagesLength = currentPackage?.images?.length || 3;
+            setCurrentMediaIndex((prev) => (prev + 1) % imagesLength);
         }, 5000);
 
         return () => clearInterval(timer);
-    }, [isAutoPlaying, packages.length]);
+    }, [isAutoPlaying, packages, currentCardIndex]);
 
     // Pause auto-rotation when hovering over the media section
     const handleMediaHover = (isHovering: boolean) => {
@@ -109,18 +178,45 @@ export function TravelPackages({ id }: Props) {
 
     // Function to handle media navigation
     const handleMediaNavigation = (direction: 'prev' | 'next') => {
-        if (!packages || packages.length === 0) return;
+        const currentPackage = packages[currentCardIndex];
+        const imagesLength = currentPackage?.images?.length || 3;
 
         if (direction === 'next') {
-            setCurrentMediaIndex((prev) => (prev + 1) % packages.length);
+            setCurrentMediaIndex((prev) => (prev + 1) % imagesLength);
         } else {
-            setCurrentMediaIndex((prev) => (prev - 1 + packages.length) % packages.length);
+            setCurrentMediaIndex((prev) => (prev - 1 + imagesLength) % imagesLength);
         }
+    };
+
+    // Update the media section to use package-specific images
+    const getMediaImages = () => {
+        const currentPackage = packages[currentCardIndex];
+        const images = currentPackage?.images || [
+            '/travel-packages/city-night-la.png',
+            '/travel-packages/palm-trees-la.png',
+            '/travel-packages/grand-canyon.png'
+        ];
+        return images;
     };
 
     return (
         <section className="relative">
+            {/* Original blue background */}
             <div className="absolute inset-x-0 top-0 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[566px] bg-[#1976D2]" />
+            
+            {/* Background image with color overlay */}
+            <div className="absolute inset-x-0 top-0 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[566px] overflow-hidden">
+                <div className="absolute w-full h-full">
+                    <Image
+                        src="/travel-packages/travels-package-bg.png"
+                        alt="Background pattern"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                </div>
+            </div>
+
             <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header Section */}
                 <motion.div
@@ -258,12 +354,8 @@ export function TravelPackages({ id }: Props) {
                             className="relative w-full h-full"
                         >
                             <Image
-                                src={[
-                                    '/travel-packages/palm-trees-la.png',
-                                    '/travel-packages/grand-canyon.png',
-                                    '/travel-packages/city-night-la.png'
-                                ][currentMediaIndex]}
-                                alt={packages[currentMediaIndex].imageAlt}
+                                src={getMediaImages()[currentMediaIndex] || getMediaImages()[0]}
+                                alt={packages[currentCardIndex]?.imageAlt || 'Tour Package'}
                                 fill
                                 className="object-cover"
                                 priority
@@ -315,13 +407,13 @@ export function TravelPackages({ id }: Props) {
                     >
                         <div className="w-full flex justify-center lg:justify-end">
                             {buttons.map((button, index) => (
-                                <button
+                                <Link
                                     key={index}
-                                    onClick={() => handleCardNavigation('next')}
+                                    href={button.link}
                                     className="w-[160px] sm:w-[180px] md:w-[203px] h-[36px] sm:h-[38px] md:h-[40px] flex items-center justify-center rounded-[20px] border border-[#1976D2] pt-[8px] pr-[16px] sm:pr-[18px] md:pr-[20px] pb-[8px] pl-[16px] sm:pl-[18px] md:pl-[20px] bg-white text-[#1976D2] hover:bg-white/90 transition-colors duration-300"
                                 >
                                     <span className="text-[14px] sm:text-[15px] md:text-[16px] leading-[20px] sm:leading-[22px] md:leading-[24px] tracking-[0%] font-medium">{button.label}</span>
-                                </button>
+                                </Link>
                             ))}
                         </div>
                     </motion.div>

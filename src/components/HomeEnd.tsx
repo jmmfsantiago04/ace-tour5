@@ -19,8 +19,8 @@ export function HomeEnd({ id }: HomeEndProps) {
   const isContentInView = useInView(contentRef, { once: true });
 
   return (
-    <section className="relative mt-[40px] sm:mt-[60px] lg:mt-[80px] flex justify-center w-full px-4 sm:px-6 lg:px-0">
-      <div className="relative flex items-center justify-center w-full lg:w-[1232px] min-h-[279px] bg-[#1B365D] rounded-t-[20px]">
+    <section className="relative mt-[40px] sm:mt-[60px] lg:mt-[80px] flex justify-center w-full px-4 sm:px-6 lg:px-0" style={{ marginBottom: '-35px', zIndex: 10 }}>
+      <div className="relative flex items-center justify-center w-full lg:w-[1232px] min-h-[279px] bg-[#1B365D] rounded-[20px]">
         <motion.div
           ref={contentRef}
           initial={{ opacity: 0, y: 20 }}

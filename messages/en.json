@@ -88,46 +88,43 @@
     "title": "Select Your Package",
     "description": "From fully guided tours to flexible semi-independent adventures, we offer the perfect package tailored to your travel style!",
     "viewAllButton": "See next package",
-    "package1": {
+    "laPackages": {
       "title": "LA Departure",
       "price": "$599",
       "features": {
         "feature1": "Daily departures available",
         "feature2": "Popular tourist attractions",
-        "feature3": "Professional guide service"  
+        "feature3": "Professional guide service"
       },
-      "imageAlt": "Los Angeles cityscape",
+      "imageAlt": "LA Package Tour",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     },
-    "package2": {
+    "vegasPackages": {
       "title": "Las Vegas Departure",
-      "price": "$799",
+      "price": "$???",
       "features": {
-        "feature1": "Daily departures available",
-        "feature2": "Popular tourist attractions",
-        "feature3": "Professional guide service"  
+        "feature1": "?????????????????????????",
+        "feature2": "?????????????????????????",
+        "feature3": "?????????????????????????"
       },
-      "imageAlt": "Grand Canyon vista",
+      "imageAlt": "Vegas Package Tour",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     },
-    "package3": {
+    "semiPackages": {
       "title": "Semi-Package",
-      "price": "$1,999",
+      "price": "$???",
       "features": {
-        "feature1": "Daily departures available",
-        "feature2": "Popular tourist attractions",
-        "feature3": "Professional guide service"  
+        "feature1": "?????????????????????????",
+        "feature2": "?????????????????????????",
+        "feature3": "?????????????????????????"
       },
-      "imageAlt": "Western USA landmarks collage",
+      "imageAlt": "Semi Package Tour",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     }
   },
@@ -170,6 +167,45 @@
         "title": "73",
         "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
       }
+    }
+  },
+
+  "Footer": {
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Sign up for insider perks and exclusive travel promotions tailored for you.",
+      "placeholder": "Your email",
+      "button": "Sign up"
+    },
+    "sitemap": {
+      "title": "Sitemap",
+      "home": "Home",
+      "travelPackages": "Travel Packages",
+      "shuttleBus": "Shuttle Bus",
+      "miceSolutions": "MICE Solutions",
+      "support": "Support"
+    },
+    "contact": {
+      "businessHours": {
+        "title": "Business Hours",
+        "hours": "Mon-Fri: 9:00 AM - 6:00 PM PST"
+      },
+      "email": {
+        "title": "Email",
+        "address": "support@acetravel.com"
+      },
+      "phone": {
+        "title": "Phone",
+        "number": "+1 (800) 123-4567"
+      }
+    },
+    "social": {
+      "title": "Follow Us On"
+    },
+    "legal": {
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms and Conditions",
+      "copyright": "The ACE. ©"
     }
   }
 } 

@@ -50,6 +50,10 @@ export function CardsShuttle({ id }: Props) {
         }
     ];
 
+    // Calculate dimensions for animation
+    const columnWidth = 1228; // Base width of one complete column set in pixels
+    const totalWidth = columnWidth * 2; // Total width for two sets
+
     // Ensure we have at least 4 image cards and 2 feature cards
     const repeatedImageCards = repeatToLength(imageCards, 4);
     const repeatedFeatureCards = repeatToLength(featureCards, 2);
@@ -76,11 +80,12 @@ export function CardsShuttle({ id }: Props) {
                     <motion.div
                         ref={carouselRef}
                         initial={{ x: 0 }}
-                        animate={isCarouselInView ? { x: "-100%" } : { x: 0 }}
+                        animate={{ x: -columnWidth }}
                         transition={{
-                            duration: 50,
+                            duration: 30,
                             repeat: Infinity,
-                            ease: "linear"
+                            ease: "linear",
+                            repeatType: "loop"
                         }}
                         className="flex gap-4 sm:gap-6 lg:gap-8 w-fit"
                     >
@@ -124,10 +129,20 @@ export function CardsShuttle({ id }: Props) {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.6, delay: 0.3 }}
-                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#1976D2] text-white"
+                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#1976D2] text-white overflow-hidden"
                                     >
+                                        {/* Pattern Background */}
+                                        <div className="absolute inset-0">
+                                            <Image
+                                                src="/shuttle-service/shuttle-card-patternbg.png"
+                                                alt="Pattern Background"
+                                                fill
+                                                className="object-cover opacity-70"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(32%) saturate(1492%) hue-rotate(182deg) brightness(94%) contrast(95%)' }}
+                                            />
+                                        </div>
                                         {repeatedFeatureCards[0].media?.url && (
-                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px]">
+                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] z-10">
                                                 <Image
                                                     src={repeatedFeatureCards[0].media.url}
                                                     alt={repeatedFeatureCards[0].media.alt}
@@ -137,7 +152,7 @@ export function CardsShuttle({ id }: Props) {
                                                 />
                                             </div>
                                         )}
-                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px]">
+                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px] z-10">
                                             <p className={`${
                                                 isEnglish 
                                                     ? 'text-[16px] font-medium leading-[24px] tracking-[0%]'
@@ -188,10 +203,20 @@ export function CardsShuttle({ id }: Props) {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.6, delay: 0.5 }}
-                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#FFC107] text-white"
+                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#FFC107] text-white overflow-hidden"
                                     >
+                                        {/* Pattern Background */}
+                                        <div className="absolute inset-0">
+                                            <Image
+                                                src="/shuttle-service/shuttle-card-patternbg.png"
+                                                alt="Pattern Background"
+                                                fill
+                                                className="object-cover"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(32%) saturate(1492%) hue-rotate(182deg) brightness(94%) contrast(95%)' }}
+                                            />
+                                        </div>
                                         {repeatedFeatureCards[1].media?.url && (
-                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px]">
+                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] z-10">
                                                 <Image
                                                     src={repeatedFeatureCards[1].media.url}
                                                     alt={repeatedFeatureCards[1].media.alt}
@@ -201,7 +226,7 @@ export function CardsShuttle({ id }: Props) {
                                                 />
                                             </div>
                                         )}
-                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px]">
+                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px] z-10">
                                             <p className={`${
                                                 isEnglish 
                                                     ? 'text-[16px] font-medium leading-[24px] tracking-[0%]'
@@ -255,20 +280,30 @@ export function CardsShuttle({ id }: Props) {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.6, delay: 0.3 }}
-                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#1976D2] text-white"
+                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#1976D2] text-white overflow-hidden"
                                     >
+                                        {/* Pattern Background */}
+                                        <div className="absolute inset-0">
+                                            <Image
+                                                src="/shuttle-service/shuttle-card-patternbg.png"
+                                                alt="Pattern Background"
+                                                fill
+                                                className="object-cover opacity-70"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(32%) saturate(1492%) hue-rotate(182deg) brightness(94%) contrast(95%)' }}
+                                            />
+                                        </div>
                                         {repeatedFeatureCards[0].media?.url && (
-                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px]">
-                                        <Image
+                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] z-10">
+                                                <Image
                                                     src={repeatedFeatureCards[0].media.url}
                                                     alt={repeatedFeatureCards[0].media.alt}
                                                     width={45}
                                                     height={45}
                                                     className="object-contain brightness-0 invert"
-                                        />
-                                    </div>
+                                                />
+                                            </div>
                                         )}
-                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px]">
+                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px] z-10">
                                             <p className={`${
                                                 isEnglish 
                                                     ? 'text-[16px] font-medium leading-[24px] tracking-[0%]'
@@ -319,10 +354,20 @@ export function CardsShuttle({ id }: Props) {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.6, delay: 0.5 }}
-                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#FFC107] text-white"
+                                        className="relative w-[260px] sm:w-[280px] md:w-[307px] h-[360px] sm:h-[380px] md:h-[408px] rounded-2xl shadow-lg bg-[#FFC107] text-white overflow-hidden"
                                     >
+                                        {/* Pattern Background */}
+                                        <div className="absolute inset-0">
+                                            <Image
+                                                src="/shuttle-service/shuttle-card-patternbg.png"
+                                                alt="Pattern Background"
+                                                fill
+                                                className="object-cover opacity-30"
+                                                style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(32%) saturate(1492%) hue-rotate(182deg) brightness(94%) contrast(95%)' }}
+                                            />
+                                        </div>
                                         {repeatedFeatureCards[1].media?.url && (
-                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px]">
+                                            <div className="absolute bottom-[90px] sm:bottom-[100px] md:bottom-[108px] left-[17px] w-[40px] h-[40px] sm:w-[45px] sm:h-[45px] z-10">
                                                 <Image
                                                     src={repeatedFeatureCards[1].media.url}
                                                     alt={repeatedFeatureCards[1].media.alt}
@@ -332,7 +377,7 @@ export function CardsShuttle({ id }: Props) {
                                                 />
                                             </div>
                                         )}
-                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px]">
+                                        <div className="absolute bottom-[17px] left-[17px] w-[230px] sm:w-[250px] md:w-[267px] h-[60px] sm:h-[66px] md:h-[72px] z-10">
                                             <p className={`${
                                                 isEnglish 
                                                     ? 'text-[16px] font-medium leading-[24px] tracking-[0%]'

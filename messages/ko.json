@@ -94,7 +94,7 @@
     "title": "나만의 완벽한 여행을 선택하세요",
     "description": "완전한 가이드 투어부터 자유로운 일정 조합까지, 원하는 스타일에 맞춘 최고의 여행 패키지를 제공합니다!",
     "viewAllButton": "See next package",
-    "package1": {
+    "laPackages": {
       "title": "LA 출발 패키지",
       "price": "$599",
       "features": {
@@ -102,38 +102,35 @@
         "feature2": "Popular tourist attractions",
         "feature3": "Professional guide service"
       },
-      "imageAlt": "로스앤젤레스 도시 전경",
+      "imageAlt": "LA 패키지 투어",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     },
-    "package2": {
-      "title": "그랜드캐년 어드벤처",
-      "price": "799달러",
+    "vegasPackages": {
+      "title": "Las Vegas Departure",
+      "price": "$???",
       "features": {
-        "feature1": "Daily departures available",
-        "feature2": "Popular tourist attractions",
-        "feature3": "Professional guide service"
+        "feature1": "?????????????????????????",
+        "feature2": "?????????????????????????",
+        "feature3": "?????????????????????????"
       },
-      "imageAlt": "그랜드캐년 전경",
+      "imageAlt": "Vegas Package Tour",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     },
-    "package3": {
-      "title": "서부 완전 정복",
-      "price": "1,999달러",
+    "semiPackages": {
+      "title": "Semi-Package",
+      "price": "$???",
       "features": {
-        "feature1": "Popular tourist attractions",
-        "feature2": "Premium hotel accommodations in LA and Las Vegas",
-        "feature3": "All transportation and guide activities included"
+        "feature1": "?????????????????????????",
+        "feature2": "?????????????????????????",
+        "feature3": "?????????????????????????"
       },
-      "imageAlt": "미국 서부 주요 명소 모음",
+      "imageAlt": "Semi Package Tour",
       "button": {
-        "label": "Book now",
-        "link": "/contact"
+        "label": "Book now"
       }
     }
   },
@@ -161,7 +158,7 @@
   },
 
   "MiceHero": {
-    "title": "미국 서부에서의 성공적인 MICE 행사: The ACE와 함께하는 맞춤형 솔루션",
+    "title": "서부 MICE 이벤트: ACE와 함께하는 맞춤형 솔루션",
     "cards": {
       "card1": {
         "title": "33",
@@ -175,6 +172,45 @@
         "title": "73",
         "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
       }
+    }
+  },
+
+  "Footer": {
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Sign up for insider perks and exclusive travel promotions tailored for you.",
+      "placeholder": "Your email",
+      "button": "Sign up"
+    },
+    "sitemap": {
+      "title": "Sitemap",
+      "home": "Home",
+      "travelPackages": "Travel Packages",
+      "shuttleBus": "Shuttle Bus",
+      "miceSolutions": "MICE Solutions",
+      "support": "Support"
+    },
+    "contact": {
+      "businessHours": {
+        "title": "Business Hours",
+        "hours": "Mon-Fri: 9:00 AM - 6:00 PM PST"
+      },
+      "email": {
+        "title": "Email",
+        "address": "support@acetravel.com"
+      },
+      "phone": {
+        "title": "Phone",
+        "number": "+1 (800) 123-4567"
+      }
+    },
+    "social": {
+      "title": "Follow Us On"
+    },
+    "legal": {
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms and Conditions",
+      "copyright": "The ACE. ©"
     }
   }
 } 
