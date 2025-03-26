@@ -1,0 +1,180 @@
+{
+  "HomeHero": {
+    "titleEnd": "미국 서부의 상징적인 여행지를 통한",
+    "titleHighlight": "특별한 여정",
+    "description": "잊을 수 없는 여행 경험으로 한국과 미국을 연결합니다",
+    "button": "지금 여행 시작하기"
+  },
+
+  "OurMission": {
+    "title": "우리의 사명",
+    "content": "잊을 수 없는 여행 경험과 문화적 연결 창출",
+    "secondaryContent": "우리는 특별한 여행 경험을 통해 문화를 연결하고 지속적인 추억을 만드는 데 전념하고 있습니다.",
+    "card1": {
+      "title": "믿을 수 있는 여행 파트너",
+      "content": "서부 미국의 대표적인 관광지를 경험하세요! LA에서 그랜드캐년까지, 전문 가이드와 함께하는 완벽한 여행을 제공합니다."
+    },
+    "card2": {
+      "title": "맞춤형 & 편안한 여행",
+      "content": "소규모 투어부터 맞춤형 LA 여행까지, 고객의 여행 스타일에 맞춘 최적의 일정으로 특별한 순간을 만들어 드립니다."
+    },
+    "card3": {
+      "title": "신뢰할 수 있는 여행 서비스",
+      "content": "공항 픽업부터 서부 미국 대표 명소까지, 여행의 모든 순간을 책임집니다. 편리하고 안전한 여행을 경험하세요!"
+    },
+    "button": {
+      "label": "회사 소개 더 보기",
+      "link": "/about"
+    }
+  },
+
+  "HowItWorks": {
+    "title": "How it works",
+    "content": "편안하게 여행하고, 자신 있게 탐험하세요",
+    "secondaryContent": "미국 서부 여행, 어렵지 않아요! ACE 투어와 함께라면, LA에서 그랜드캐년까지 맞춤형 가이드와 함께하는 특별한 여행이 기다리고 있습니다.",
+    "card1": {
+      "title": "원하는 미국 서부 여행을 선택하세요",
+      "content": "LA부터 그랜드캐년까지! 가이드 투어, 맞춤 여행, 소규모 그룹 투어 등 다양한 여행 옵션을 제공합니다."
+    },
+    "card2": {
+      "title": "소규모 그룹으로 편안한 여행",
+      "content": "서부 미국의 숨은 명소를 현지 전문가와 함께 여유롭게 탐험하세요. 더욱 친근하고 자유로운 여행이 가능합니다!"
+    },
+    "card3": {
+      "title": "자유로운 여행 일정",
+      "content": "원하는 명소에서 충분한 시간을 보내고, 유연한 일정으로 나만의 여행을 즐기세요. 가이드 투어와 자유 시간이 적절히 조화되어, 부담 없이 미국 서부의 매력을 만끽할 수 있습니다!"
+    },
+    "button": {
+      "label": "프리미엄 투어로 여행을 더 특별하게",
+      "link": "/contact"
+    }
+  },
+
+  "UserStories": {
+    "title": "User stories",
+    "description": "여행 후기가 증명하는 최고의 경험",
+    "story1": {
+      "initial": "K",
+      "name": "Kim*mi",
+      "text": "안녕하세요. 저는 21기 참가자입니다. 우선 9박 11일간 미서부 여행을 잘 마무리 할 수 있게 도와주신 에이스투어 관계자분들과 우리 션가이드님, 그리고 같이 지낸 21기수 분들까지 모두 감사합니다....",
+      "link": "/??"
+    },
+    "story2": {
+      "initial": "G",
+      "name": "Go*Hyeon",
+      "text": "2025년도 20기로 다녀왔습니다. 혹시 미국 서부 여행 계획중이시고 주요 관광지를 모두 방문하면서 자유일정까지 챙길 생각 있으시면 무조건 신청하시는거 추천드릴게요. ✅1.자율성 세미패키지라 전체일정의 90프로....",
+      "link": "/??"
+    },
+    "story3": {
+      "initial": "H",
+      "name": "Haw*hee",
+      "text": " 미국 여행을 하고 싶은데, 처음이라 고민하다가 선택한 마리틀 세미패키지. 여자 4명이 안전하고 즐겁게 여행할 수 있었던 최고의 선택이었습니다. 백가이드님의....",
+      "link": "/??"
+    },
+    "button": {
+      "label": "여행자 후기 전체 보기",
+      "link": "/??"
+    }
+  },
+
+  "HomeEnd": {
+    "title": "지금 떠날 준비 되셨나요?",
+    "button1": {
+      "label": "문의하기 – 맞춤 여행 상담",
+      "link": "/contact"
+    },
+    "button2": {
+      "label": "출발 준비 완료! 셔틀 예약하기",
+      "link": "/tours"
+    }
+  },
+
+  "TravelPackages": {
+    "badge": "The Tour만의 프리미엄 여행 패키지",
+    "title": "나만의 완벽한 여행을 선택하세요",
+    "description": "완전한 가이드 투어부터 자유로운 일정 조합까지, 원하는 스타일에 맞춘 최고의 여행 패키지를 제공합니다!",
+    "viewAllButton": "See next package",
+    "package1": {
+      "title": "LA 출발 패키지",
+      "price": "$599",
+      "features": {
+        "feature1": "Daily departures available",
+        "feature2": "Popular tourist attractions",
+        "feature3": "Professional guide service"
+      },
+      "imageAlt": "로스앤젤레스 도시 전경",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    },
+    "package2": {
+      "title": "그랜드캐년 어드벤처",
+      "price": "799달러",
+      "features": {
+        "feature1": "Daily departures available",
+        "feature2": "Popular tourist attractions",
+        "feature3": "Professional guide service"
+      },
+      "imageAlt": "그랜드캐년 전경",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    },
+    "package3": {
+      "title": "서부 완전 정복",
+      "price": "1,999달러",
+      "features": {
+        "feature1": "Popular tourist attractions",
+        "feature2": "Premium hotel accommodations in LA and Las Vegas",
+        "feature3": "All transportation and guide activities included"
+      },
+      "imageAlt": "미국 서부 주요 명소 모음",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    }
+  },
+
+  "ShuttleHero": {
+    "badge": "여행이 한층 더 편리해졌습니다",
+    "title": "LA공항 셔틀버스",
+    "description": "고급스럽고 넉넉한 좌석, 정시 출발, 신뢰할 수 있는 셔틀 서비스!LA 공항에서 샌디에이고와 라스베가스로 편하게 이동하세요.비싼 렌터카 없이도 편리하고 경제적인 여행이 가능합니다.",
+    "features": {
+      "feature1": "정기 운행 | 빠른 이동 | 합리적인 가격",
+      "feature2": "예약은 간단하게!"
+    }
+  },
+
+  "CardsShuttle": {
+    "title": "편안하고 즐거운 여정을 책임집니다!",
+    "cards": {
+      "card1": {
+        "content": "The Ace와 함께라면 교통 걱정 없이 여행에만 집중할 수 있습니다."
+      },
+      "card2": {
+        "content": "편안한 좌석에서 새로운 친구들과 여행의 설렘을 나누며 즐거운 시간을 보내세요."
+      }
+    }
+  },
+
+  "MiceHero": {
+    "title": "미국 서부에서의 성공적인 MICE 행사: The ACE와 함께하는 맞춤형 솔루션",
+    "cards": {
+      "card1": {
+        "title": "33",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      },
+      "card2": {
+        "title": "37",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      },
+      "card3": {
+        "title": "73",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      }
+    }
+  }
+} 

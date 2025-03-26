@@ -1,0 +1,175 @@
+{
+  "HomeHero": {
+    "titleStart": "Journey Through the Most Iconic Destinations in the",
+    "titleHighlight": "Western USA",
+    "description": "Bridging Korea and the USA with Unforgettable Travel Experiences",
+    "button": "Begin Your Journey Now"
+  },
+  "OurMission": {
+    "title": "Our mission",
+    "content": "Seamless, Exciting, and Unforgettable – Our Travel Promise",
+    "card1": {
+      "title": "Your Trusted Travel Partner",
+      "content": "From Los Angeles to the Grand Canyon, we specialize in Western USA travel with expert planning and seamless experiences. Let us handle the details while you enjoy the journey."
+    },
+    "card2": {
+      "title": "Personalized & Hassle-Free Tours",
+      "content": "Every traveler is unique. Whether it's a customized LA tour, family vacation, or small group trip, we design experiences tailored to your needs for an unforgettable adventure."
+    },
+    "card3": {
+      "title": "Seamless & Reliable Travel",
+      "content": "From airport pickups to guided Western US sightseeing tours, we ensure stress-free and smooth journeys. Travel confidently with our expertly curated itineraries and local insights."
+    }
+  },
+
+  "HowItWorks": {
+    "title": "How it works",
+    "content": "Travel With Ease, Explore With Confidence",
+    "secondaryContent": "Navigating the Western USA has never been easier. With The Ace, you'll experience expertly guided adventures, seamless travel, and personalized care—just like traveling with family",
+    "card1": {
+      "title": "Pick Your Perfect Western USA Adventure",
+      "content": "From Los Angeles to the Grand Canyon, choose from a variety of guided tours, semi-packages, and customized trips that fit your travel style."
+    },
+    "card2": {
+      "title": "Travel Comfortably in a Small Group",
+      "content": "Enjoy a stress-free experience with intimate group tours, personalized attention, and expert guides who know Western USA's best-kept secrets."
+    },
+    "card3": {
+      "title": "Explore at Your Own Pace",
+      "content": "Whether you prefer structured itineraries or independent exploration, our tours offer the perfect balance of guided experiences and free time."
+    },
+    "button": {
+      "label": "Upgrade Your Journey – Explore Premium Tours",
+      "link": "/contact"
+    }
+  },
+
+  "UserStories": {
+    "title": "User stories",
+    "description": "Real Experiences, Real Travelers",
+    "story1": {
+      "initial": "K",
+      "name": "Kim*mi",
+      "text": "안녕하세요. 저는 21기 참가자입니다. 우선 9박 11일간 미서부 여행을 잘 마무리 할 수 있게 도와주신 에이스투어 관계자분들과 우리 션가이드님, 그리고 같이 지낸 21기수 분들까지 모두 감사합니다....",
+      "link": "/??"
+    },
+    "story2": {
+      "initial": "G",
+      "name": "Go*Hyeon",
+      "text": "2025년도 20기로 다녀왔습니다. 혹시 미국 서부 여행 계획중이시고 주요 관광지를 모두 방문하면서 자유일정까지 챙길 생각 있으시면 무조건 신청하시는거 추천드릴게요. ✅1.자율성 세미패키지라 전체일정의 90프로....",
+      "link": "/??"
+    },
+    "story3": {
+      "initial": "H",
+      "name": "Haw*hee",
+      "text": " 미국 여행을 하고 싶은데, 처음이라 고민하다가 선택한 마리틀 세미패키지. 여자 4명이 안전하고 즐겁게 여행할 수 있었던 최고의 선택이었습니다. 백가이드님의....",
+      "link": "/??"
+    },
+    "button": {
+      "label": "View all reviews",
+      "link": "/stories"
+    }
+  },
+
+  "HomeEnd": {
+    "title": "Exciting Journeys Start with a Single Click!",
+    "button1": {
+      "label": "Got Questions? We're Here for You!",
+      "link": "/contact"
+    },
+    "button2": {
+      "label": "Book Your Ride & Start Exploring",
+      "link": "/tours"
+    }
+  },
+
+  "TravelPackages": {
+    "badge": "Our premium packages",
+    "title": "Select Your Package",
+    "description": "From fully guided tours to flexible semi-independent adventures, we offer the perfect package tailored to your travel style!",
+    "viewAllButton": "See next package",
+    "package1": {
+      "title": "LA Departure",
+      "price": "$599",
+      "features": {
+        "feature1": "Daily departures available",
+        "feature2": "Popular tourist attractions",
+        "feature3": "Professional guide service"  
+      },
+      "imageAlt": "Los Angeles cityscape",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    },
+    "package2": {
+      "title": "Las Vegas Departure",
+      "price": "$799",
+      "features": {
+        "feature1": "Daily departures available",
+        "feature2": "Popular tourist attractions",
+        "feature3": "Professional guide service"  
+      },
+      "imageAlt": "Grand Canyon vista",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    },
+    "package3": {
+      "title": "Semi-Package",
+      "price": "$1,999",
+      "features": {
+        "feature1": "Daily departures available",
+        "feature2": "Popular tourist attractions",
+        "feature3": "Professional guide service"  
+      },
+      "imageAlt": "Western USA landmarks collage",
+      "button": {
+        "label": "Book now",
+        "link": "/contact"
+      }
+    }
+  },
+
+  "ShuttleHero": {
+    "badge": "Travel Made Easier!",
+    "title": "Shuttle Service",
+    "description": "Spacious seating, on-time departures, and a reliable shuttle service!Seamlessly travel between LAX, San Diego, and Las Vegas without the hassle of rental cars.",
+    "features": {
+      "feature1": "Scheduled rides | Fast & convenient | Budget-friendly",
+      "feature2": "Easy Booking, Hassle-Free Travel!Start your smooth journey now."
+    }
+  },
+
+  "CardsShuttle": {
+    "title": "Sit Back & Enjoy the Ride",
+    "cards": {
+      "card1": {
+        "content": "No stress, no hassle—just sit back and focus on the journey ahead."
+      },
+      "card2": {
+        "content": "Share laughter and stories with fellow travelers in a comfortable and friendly setting."
+      }
+
+    }
+  },
+
+  "MiceHero": {
+    "title": "Successful MICE Events in the Western USA: Customized Solutions with The ACE",
+    "cards": {
+      "card1": {
+        "title": "33",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      },
+      "card2": {
+        "title": "37",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      },
+      "card3": {
+        "title": "73",
+        "content": "Lorem ipsum dolor sit amet consectetur. Aliquet ipsum vitae eget tellus erat a."
+      }
+    }
+  }
+} 
