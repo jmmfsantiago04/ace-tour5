@@ -1,48 +1,52 @@
-import {NextIntlClientProvider, hasLocale} from 'next-intl';
-import {notFound} from 'next/navigation';
-import {routing} from '@/i18n/routing';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import { notFound } from "next/navigation"
+import { NextIntlClientProvider } from "next-intl"
+import { locales, Locale } from "../../../i18n.config"
+import "../globals.css"
+import { Toaster } from "sonner"
+import { CloudinaryScript } from "@/components/CloudinaryScript"
+import { Navbar } from "@/components/Navbar"
+import { Footer } from "@/components/Footer"
 
-type Props = {
-  children: React.ReactNode;
-  params: Promise<{locale: string}>;
-};
+const inter = Inter({ subsets: ["latin"] })
 
-export async function generateMetadata({
-  params
-}: {
-  params: Promise<{locale: string}>;
-}) {
-  const {locale} = await params;
-  return {
-    htmlLang: locale
-  };
+export const metadata: Metadata = {
+  title: "Ace Tour",
+  description: "Ace Tour - Your Travel Partner",
+}
+
+async function getMessages(locale: string) {
+  try {
+    return (await import(`../../../messages/${locale}.json`)).default
+  } catch (error) {
+    notFound()
+  }
 }
 
 export default async function LocaleLayout({
   children,
-  params
-}: Props) {
-  const {locale} = await params;
+  params,
+}: {
+  children: React.ReactNode
+  params: Promise<{ locale: Locale }>
+}) {
+  const { locale } = await params
   
   // Validate that the incoming `locale` parameter is valid
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  if (!locales.includes(locale)) notFound()
 
-  let messages;
-  try {
-    messages = (await import(`../../../messages/${locale}.json`)).default;
-  } catch (error) {
-    notFound();
-  }
+  const messages = await getMessages(locale)
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <Navbar lang={locale as 'en' | 'ko'} />
-      {children}
+      <Navbar lang={locale} />
+      <main className={inter.className}>
+        {children}
+      </main>
       <Footer />
+      <Toaster />
+      <CloudinaryScript />
     </NextIntlClientProvider>
-  );
+  )
 } 

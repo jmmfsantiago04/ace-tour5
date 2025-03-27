@@ -410,9 +410,9 @@ export function TravelPackages({ id }: Props) {
                                 <Link
                                     key={index}
                                     href={button.link}
-                                    className="w-[160px] sm:w-[180px] md:w-[203px] h-[36px] sm:h-[38px] md:h-[40px] flex items-center justify-center rounded-[20px] border border-[#1976D2] pt-[8px] pr-[16px] sm:pr-[18px] md:pr-[20px] pb-[8px] pl-[16px] sm:pl-[18px] md:pl-[20px] bg-white text-[#1976D2] hover:bg-white/90 transition-colors duration-300"
+                                    className="w-[160px] mb-3 sm:w-[180px] md:w-[203px] h-[36px] sm:h-[38px] md:h-[40px] flex items-center justify-center rounded-[20px] border border-[#1976D2] pt-[8px] pr-[16px] sm:pr-[18px] md:pr-[20px] pb-[8px] pl-[16px] sm:pl-[18px] md:pl-[20px] bg-white text-[#1976D2] hover:bg-white/90 transition-colors duration-300"
                                 >
-                                    <span className="text-[14px] sm:text-[15px] md:text-[16px] leading-[20px] sm:leading-[22px] md:leading-[24px] tracking-[0%] font-medium">{button.label}</span>
+                                    <span className=" text-[14px] sm:text-[15px] md:text-[16px] leading-[20px] sm:leading-[22px] md:leading-[24px] tracking-[0%] font-medium">{button.label}</span>
                                 </Link>
                             ))}
                         </div>

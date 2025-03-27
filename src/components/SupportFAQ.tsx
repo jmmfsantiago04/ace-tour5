@@ -6,44 +6,48 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
-interface SupportFAQProps {
-    cards?: {
-        cardTitle: string;
-        cardContent: string;
-        id?: string | null;
-    }[];
+interface FAQ {
+    id: string;
+    title: string;
+    content: string;
 }
 
-export function SupportFAQ({ cards }: SupportFAQProps) {
+interface SupportFAQProps {
+    faqs?: FAQ[];
+}
+
+export function SupportFAQ({ faqs }: SupportFAQProps) {
     const t = useTranslations('SupportFAQ');
     const params = useParams();
     const isEnglish = params.locale === 'en';
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+    // If no FAQs are provided as props, use the default ones from translations
     const defaultCards = [
         {
-            cardTitle: t('cards.card1.title'),
-            cardContent: t('cards.card1.content'),
-            id: "1"
+            id: "1",
+            title: t('cards.card1.title'),
+            content: t('cards.card1.content')
         },
         {
-            cardTitle: t('cards.card2.title'),
-            cardContent: t('cards.card2.content'),
-            id: "2"
+            id: "2",
+            title: t('cards.card2.title'),
+            content: t('cards.card2.content')
         },
         {
-            cardTitle: t('cards.card3.title'),
-            cardContent: t('cards.card3.content'),
-            id: "3"
+            id: "3",
+            title: t('cards.card3.title'),
+            content: t('cards.card3.content')
         },
         {
-            cardTitle: t('cards.card4.title'),
-            cardContent: t('cards.card4.content'),
-            id: "4"
+            id: "4",
+            title: t('cards.card4.title'),
+            content: t('cards.card4.content')
         }
     ];
 
-    const displayCards = cards?.length ? cards : defaultCards;
+    // Limit to maximum 6 cards
+    const displayCards = (faqs?.length ? faqs : defaultCards).slice(0, 6);
 
     return (
         <section className="relative flex justify-center w-full pt-[100px] min-h-screen bg-[#A3D5FF]/30">
@@ -90,7 +94,7 @@ export function SupportFAQ({ cards }: SupportFAQProps) {
                 <div className="flex flex-col space-y-3 sm:space-y-4 lg:space-y-5 max-w-[47.375rem] mx-auto mt-6 sm:mt-8 lg:mt-12">
                     {displayCards.map((card, index) => (
                         <motion.div
-                            key={card.id || index}
+                            key={card.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -101,7 +105,7 @@ export function SupportFAQ({ cards }: SupportFAQProps) {
                                 className="flex items-center justify-between w-full min-h-[3.5rem] xs:min-h-[4rem] sm:min-h-[5rem] py-[0.875rem] xs:py-[1rem] sm:py-[1.5rem] px-[0.75rem] xs:px-[1rem] bg-white rounded-[1rem] xs:rounded-[1.375rem] text-left hover:bg-gray-50 transition-colors border border-[#E5E7EB] gap-[0.75rem] xs:gap-[1.25rem]"
                             >
                                 <span className="text-[0.875rem] xs:text-[1rem] font-medium leading-[1.4] xs:leading-[1.5] tracking-[0%] text-[#262626]">
-                                    {card.cardTitle}
+                                    {card.title}
                                 </span>
                                 <span className="flex-shrink-0">
                                     <motion.div
@@ -138,7 +142,7 @@ export function SupportFAQ({ cards }: SupportFAQProps) {
                             >
                                 <div className="p-4 xs:p-6 pt-0">
                                     <p className="text-[0.8125rem] xs:text-[0.875rem] sm:text-[1rem] text-[#262626]/80 leading-[1.6]">
-                                        {card.cardContent}
+                                        {card.content}
                                     </p>
                                 </div>
                             </motion.div>

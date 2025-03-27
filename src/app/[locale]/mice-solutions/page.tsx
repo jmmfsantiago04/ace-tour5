@@ -1,19 +1,14 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
 import { MiceHero } from '@/components/MiceHero';
 import { MiceCards } from '@/components/MiceCards';
+import { getActiveMiceCards } from '@/app/actions/getMiceCards';
 
-export default function MiceSolutionsPage() {
-  const t = useTranslations('MiceHero');    
-  const params = useParams();
-  const isEnglish = params.locale === 'en';
+export default async function MiceSolutionsPage() {
+  const { data: miceCards } = await getActiveMiceCards();
 
   return (
-    <main className="min-h-screen bg-white">
-        <MiceHero />
-        <MiceCards/>  
+    <main className="min-h-screen">
+      <MiceHero />
+      <MiceCards cards={miceCards} />
     </main>
   );
 } 

@@ -248,5 +248,10 @@
         "content": "We monitor all flight arrivals. If your flight is delayed, we'll adjust your pickup time accordingly at no extra charge. Please make sure to provide your flight details during booking."
       }
     }
+  },
+
+  "Index": {
+    "title": "Ace Tour",
+    "description": "Your Travel Partner"
   }
 } 

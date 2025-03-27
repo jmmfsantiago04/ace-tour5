@@ -6,11 +6,20 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
 
-type UserStoriesProps = {
-  id?: string;
+type Review = {
+  id: string;
+  reviewerInitial: string;
+  reviewerName: string;
+  reviewText: string;
+  readMoreLink?: string | null;
 };
 
-export function UserStories({ id }: UserStoriesProps) {
+type UserStoriesProps = {
+  id?: string;
+  reviews?: Review[];
+};
+
+export function UserStories({ id, reviews }: UserStoriesProps) {
   const t = useTranslations('UserStories');
   const params = useParams();
 
@@ -20,29 +29,32 @@ export function UserStories({ id }: UserStoriesProps) {
   const isHeaderInView = useInView(headerRef, { once: true });
   const isButtonsInView = useInView(buttonsRef, { once: true });
 
-  const stories = [
+  // If no reviews are provided as props, use the default ones from translations
+  const defaultStories = [
     {
+      id: '1',
       reviewerInitial: t('story1.initial'),
       reviewerName: t('story1.name'),
       reviewText: t('story1.text'),
-      readMoreLink: t('story1.link'),
-      id: '1'
+      readMoreLink: t('story1.link')
     },
     {
+      id: '2',
       reviewerInitial: t('story2.initial'),
       reviewerName: t('story2.name'),
       reviewText: t('story2.text'),
-      readMoreLink: t('story2.link'),
-      id: '2'
+      readMoreLink: t('story2.link')
     },
     {
+      id: '3',
       reviewerInitial: t('story3.initial'),
       reviewerName: t('story3.name'),
       reviewText: t('story3.text'),
-      readMoreLink: t('story3.link'),
-      id: '3'
+      readMoreLink: t('story3.link')
     }
   ];
+
+  const stories = reviews?.length ? reviews : defaultStories;
 
   // Create an infinite sequence of stories
   const duplicatedStories = [...stories, ...stories, ...stories, ...stories, ...stories, ...stories];

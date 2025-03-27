@@ -1,26 +1,30 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
   title: "Ace Tour",
-  description: "Your multilingual tour guide",
+  description: "Ace Tour - Your Travel Partner",
 };
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <html>
-      <body className={geist.variable}>
+    <html lang="en">
+      <head>
+        <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+      </head>
+      <body className={inter.className}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

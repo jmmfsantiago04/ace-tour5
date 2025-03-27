@@ -3,51 +3,53 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+interface MiceCard {
+    id: string;
+    label: string;
+    date: string;
+    content: string;
+    image: {
+        url: string;
+        alt: string;
+    };
+}
+
 interface MiceCardsProps {
-    cards?: {
-        label: string;
-        date: string;
-        content: string;
-        image: {
-            url: string;
-            alt: string;
-        };
-        id?: string | null;
-    }[];
+    cards?: MiceCard[];
 }
 
 export function MiceCards({ cards = [] }: MiceCardsProps) {
     // Default cards if none provided
     const defaultCards = [
         {
+            id: "1",
             label: "MICE",
             date: "March 15, 2024",
             content: "Corporate Event Planning & Management",
             image: {
                 url: "/placeholder.png",
                 alt: "Corporate Event"
-            },
-            id: "1"
+            }
         },
         {
+            id: "2",
             label: "MICE",
             date: "April 20, 2024",
             content: "Conference & Meeting Solutions",
             image: {
                 url: "/placeholder.png",
                 alt: "Conference"
-            },
-            id: "2"
+            }
         },
         {
+            id: "3",
             label: "MICE",
             date: "May 10, 2024",
             content: "Incentive Travel Programs",
             image: {
                 url: "/placeholder.png",
                 alt: "Incentive Travel"
-            },
-            id: "3"
+            }
         }
     ];
 
@@ -61,7 +63,7 @@ export function MiceCards({ cards = [] }: MiceCardsProps) {
                         const card = displayCards[i % displayCards.length];
                         return (
                             <motion.div
-                                key={`${card.id || i}-${i}`}
+                                key={`${card.id}-${i}`}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}

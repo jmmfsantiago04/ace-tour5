@@ -17,40 +17,15 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tours     Tour[]   @relation("TourGuide")
-  bookings  Booking[]
 }
 
-model Tour {
-  id          String   @id @default(cuid())
-  title       String
-  description String
-  price       Float
-  duration    Int      // Duration in hours
-  location    String
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  guideId     String
-  guide       User     @relation("TourGuide", fields: [guideId], references: [id])
-  bookings    Booking[]
-  maxGroupSize Int     @default(10)
-  startDates  DateTime[]
-}
-
-model Booking {
-  id        String   @id @default(cuid())
-  tourId    String
-  userId    String
-  tour      Tour     @relation(fields: [tourId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-  date      DateTime
-  status    BookingStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  price     Float    // Price at the time of booking
+enum Role {
+  USER
+  ADMIN
 }
 
 model Review {

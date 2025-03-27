@@ -1,34 +1,29 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
-import { SupportInquiry, InquiryStatus } from '@/types/support'
+import { createFAQ as _createFAQ } from './admin/createFAQ'
+import { createMiceCard as _createMiceCard } from './admin/createMiceCard'
+import { createReview as _createReview } from './admin/createReview'
+import { getFAQs as _getFAQs } from './admin/getFAQs'
+import { getMiceCards as _getMiceCards } from './admin/getMiceCards'
+import { getReviews as _getReviews } from './admin/getReviews'
+import { updateFAQ as _updateFAQ } from './admin/updateFAQ'
+import { updateMiceCard as _updateMiceCard } from './admin/updateMiceCard'
+import { updateReview as _updateReview } from './admin/updateReview'
+import { deleteItem as _deleteItem } from './admin/deleteItem'
+import { 
+  getSupportInquiries as _getSupportInquiries,
+  updateInquiryStatus as _updateInquiryStatus 
+} from './admin/supportInquiries'
 
-export async function getSupportInquiries(): Promise<{ inquiries?: SupportInquiry[], error?: string }> {
-  try {
-    const inquiries = await prisma.support.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
-    return { inquiries }
-  } catch (error) {
-    console.error('Error fetching support inquiries:', error)
-    return { error: 'Failed to fetch support inquiries' }
-  }
-}
-
-export async function updateInquiryStatus(
-  id: string, 
-  status: InquiryStatus
-): Promise<{ inquiry?: SupportInquiry, error?: string }> {
-  try {
-    const inquiry = await prisma.support.update({
-      where: { id },
-      data: { status }
-    })
-    return { inquiry }
-  } catch (error) {
-    console.error('Error updating inquiry status:', error)
-    return { error: 'Failed to update inquiry status' }
-  }
-} 
+export const createFAQ = _createFAQ
+export const createMiceCard = _createMiceCard
+export const createReview = _createReview
+export const getFAQs = _getFAQs
+export const getMiceCards = _getMiceCards
+export const getReviews = _getReviews
+export const updateFAQ = _updateFAQ
+export const updateMiceCard = _updateMiceCard
+export const updateReview = _updateReview
+export const deleteItem = _deleteItem
+export const getSupportInquiries = _getSupportInquiries
+export const updateInquiryStatus = _updateInquiryStatus 

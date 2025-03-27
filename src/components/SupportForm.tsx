@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom"
 import { createSupportInquiry } from "@/app/actions/support"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -44,13 +45,18 @@ export function SupportForm({ className }: { className?: string }) {
     errors: null,
   })
 
+  React.useEffect(() => {
+    if (state?.message) {
+      toast.success(state.message)
+    }
+    if (state?.errors?.form) {
+      toast.error(state.errors.form[0])
+    }
+  }, [state])
+
   return (
     <div className="relative w-full max-w-[560px] mx-auto px-4 sm:px-6 lg:px-0 h-auto sm:h-[634px] rounded-lg">
       <form action={formAction} className={cn("space-y-6", className)}>
-        {state?.message && (
-          <div className="text-green-600 text-sm">{state.message}</div>
-        )}
-
         <div>
           <label htmlFor="inquiryType" className="text-base font-medium leading-6 tracking-[0] text-[#262626]">
             Inquiry Type
@@ -128,10 +134,6 @@ export function SupportForm({ className }: { className?: string }) {
             )}
           </div>
         </div>
-
-        {state?.errors?.form && (
-          <div className="text-red-500 text-sm">{state.errors.form[0]}</div>
-        )}
 
         <SubmitButton />
       </form>
