@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { MiceHero } from '@/components/MiceHero';
+import { MiceCards } from '@/components/MiceCards';
 
 export default function MiceSolutionsPage() {
   const t = useTranslations('MiceHero');    
@@ -12,6 +13,7 @@ export default function MiceSolutionsPage() {
   return (
     <main className="min-h-screen bg-white">
         <MiceHero />
+        <MiceCards/>  
     </main>
   );
 } 

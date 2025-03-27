@@ -207,5 +207,46 @@
       "terms": "Terms and Conditions",
       "copyright": "The ACE. ©"
     }
+  },
+
+  "SupportHero": {
+    "title": "How Can We Assist You with Your US Travel?",
+    "cards": {
+      "card1": {
+        "title": "Business Hours",
+        "content": "Mon-Fri: 9:00 AM - 6:00 PM PST"
+      },
+      "card2": {
+        "title": "Email",
+        "content": "support@acetravel.com"
+      },
+      "card3": {
+        "title": "Phone",
+        "content": "+1 (800) 123-4567"
+      }
+    }
+  },
+
+  "SupportFAQ": {
+    "title": "FAQ",
+    "content": "Frequently Asked Questions – US Travel & ACE Tour Information",
+    "cards": {
+      "card1": {
+        "title": "How do I book a shuttle service?",
+        "content": "You can book our shuttle service through our website by using the booking form on our Shuttle Service page. Select your pickup location, destination, date, and the number of passengers. You'll receive a confirmation email with your booking details."
+      },
+      "card2": {
+        "title": "What is your cancellation policy?",
+        "content": "Our standard cancellation policy allows free cancellation up to 24 hours before your scheduled pickup time. Cancellations made within 24 hours of the pickup time may be subject to a cancellation fee."
+      },
+      "card3": {
+        "title": "Do you offer group discounts?",
+        "content": "Yes, we offer special rates for group bookings of 10 or more passengers. Please contact our support team for more information about group rates and arrangements."
+      },
+      "card4": {
+        "title": "What if my flight is delayed?",
+        "content": "We monitor all flight arrivals. If your flight is delayed, we'll adjust your pickup time accordingly at no extra charge. Please make sure to provide your flight details during booking."
+      }
+    }
   }
 } 

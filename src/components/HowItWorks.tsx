@@ -3,16 +3,15 @@
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Link } from '@/i18n/navigation';
 
 type HowItWorksProps = {
-  imageSrc?: string;
   imageAlt?: string;
 };
 
-export function HowItWorks({ imageSrc, imageAlt = 'How it works' }: HowItWorksProps) {
+export function HowItWorks({ imageAlt = 'How it works' }: HowItWorksProps) {
   const t = useTranslations('HowItWorks');
   const params = useParams();
   const isEnglish = params.locale === 'en';
@@ -24,6 +23,22 @@ export function HowItWorks({ imageSrc, imageAlt = 'How it works' }: HowItWorksPr
   const isLabelInView = useInView(labelRef, { once: true });
   const isMediaInView = useInView(mediaRef, { once: true });
   const isButtonInView = useInView(buttonRef, { once: true });
+
+  const images = [
+    '/home/how-it-works1.png',
+    '/home/how-it-works2.png',
+    '/home/how-it-works3.png'
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const cards = [
     {
@@ -108,23 +123,32 @@ export function HowItWorks({ imageSrc, imageAlt = 'How it works' }: HowItWorksPr
         {/* Image and Cards Container */}
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12 mx-auto min-h-[670px]">
           {/* Image Container */}
-          {imageSrc && (
-            <motion.div
-              ref={mediaRef}
-              initial={{ opacity: 0, x: -20 }}
-              animate={isMediaInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.8 }}
-              className="relative flex-shrink-0 w-full max-w-[512px] h-[280px] md:h-[340px] mt-4 lg:mt-0"
-            >
-              <Image
-                src={imageSrc}
-                alt={imageAlt || "How it works illustration"}
-                fill
-                className="object-contain"
-                priority
-              />
-            </motion.div>
-          )}
+          <motion.div
+            ref={mediaRef}
+            initial={{ opacity: 0, x: -20 }}
+            animate={isMediaInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+            transition={{ duration: 0.8 }}
+            className="relative flex-shrink-0 w-full max-w-[512px] h-[280px] md:h-[340px] mt-4 lg:mt-0"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentImageIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={images[currentImageIndex]}
+                  alt={`${imageAlt} ${currentImageIndex + 1}`}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
 
           {/* Cards Stack */}
           <div className="flex flex-col w-full lg:max-w-[35rem]">

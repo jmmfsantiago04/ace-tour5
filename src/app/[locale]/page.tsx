@@ -3,13 +3,18 @@ import { OurMission } from '@/components/OurMission';
 import { HowItWorks } from '@/components/HowItWorks';
 import { UserStories } from '@/components/UserStories';
 import { HomeEnd } from '@/components/HomeEnd';
+import { Vector1 } from '@/components/Vector1';
+import { Vector2 } from '@/components/Vector2';
 
 export default function HomePage() {
   return (
     <main>
-      <HomeHero imageSrc="/hero-image.jpg" />
-      <OurMission imageSrc="/mission-image.jpg" />
-      <HowItWorks imageSrc="/how-it-works-image.jpg" />
+      <HomeHero />
+      <Vector1/>
+      <OurMission  />
+      <Vector2/>
+      <HowItWorks />
+      <Vector2/>
       <UserStories />
       <HomeEnd />
     </main>

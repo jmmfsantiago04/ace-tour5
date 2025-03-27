@@ -81,20 +81,14 @@ export function UserStories({ id }: UserStoriesProps) {
             <motion.div
               className="flex gap-4 sm:gap-5 md:gap-6"
               animate={{
-                x: [-cardWidth, -totalWidth]
+                x: [-totalWidth/2, -totalWidth]
               }}
               transition={{
                 x: {
-                  duration: duplicatedStories.length * 10,
+                  duration: duplicatedStories.length * 8,
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop"
-                }
-              }}
-              onAnimationComplete={() => {
-                const firstElement = document.querySelector('[data-row="1"]');
-                if (firstElement) {
-                  firstElement.scrollLeft = 0;
                 }
               }}
             >
@@ -133,21 +127,15 @@ export function UserStories({ id }: UserStoriesProps) {
             <motion.div
               className="flex gap-4 sm:gap-5 md:gap-6"
               animate={{
-                x: [-cardWidth, -totalWidth]
+                x: [-totalWidth/2, -totalWidth]
               }}
               transition={{
                 x: {
-                  duration: duplicatedStories.length * 10,
+                  duration: duplicatedStories.length * 8,
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop",
-                  delay: 1
-                }
-              }}
-              onAnimationComplete={() => {
-                const secondElement = document.querySelector('[data-row="2"]');
-                if (secondElement) {
-                  secondElement.scrollLeft = 0;
+                  delay: 2
                 }
               }}
             >

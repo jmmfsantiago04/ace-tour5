@@ -8,11 +8,12 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 type HomeHeroProps = {
-  imageSrc: string;
+  videoSrc?: string;
+  imageSrc?: string;
   imageAlt?: string;
 };
 
-export function HomeHero({ imageSrc, imageAlt = 'Tour Guide' }: HomeHeroProps) {
+export function HomeHero({ videoSrc = '/home/videoHome.mp4', imageSrc, imageAlt = 'Tour Guide' }: HomeHeroProps) {
   const t = useTranslations('HomeHero');
   const params = useParams();
   const isEnglish = params.locale === 'en';
@@ -127,13 +128,16 @@ export function HomeHero({ imageSrc, imageAlt = 'Tour Guide' }: HomeHeroProps) {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="relative mt-8 rounded-2xl border border-[#EAECF0] overflow-hidden w-full aspect-[2.017]"
           >
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              fill
-              className="object-cover"
-              priority
-            />
+            <video
+              className="w-full h-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src={videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </motion.div>
         </div>
       </div>

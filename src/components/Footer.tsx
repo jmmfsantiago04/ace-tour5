@@ -12,7 +12,7 @@ export function Footer() {
   const locale = params.locale as string;
 
   return (
-    <div className="flex justify-center w-full px-4 sm:px-6 lg:px-0">
+    <div className="flex justify-center w-full px-4 mb-[35px] sm:px-6 lg:px-0 bg-white">
       <footer className="bg-[#1B365D] text-white w-full max-w-[1232px] min-h-[397px] rounded-[22px] pt-[60px] px-4 sm:px-6 lg:pl-[80px] relative overflow-hidden">
         {/* Pattern Background */}
         <div className="absolute w-full max-w-[981px] h-[564px] overflow-hidden left-1/2 -translate-x-1/2">
@@ -21,7 +21,7 @@ export function Footer() {
             alt="World Map Background"
             width={981}
             height={564}
-            className="object-contain "
+            className="object-contain"
             priority
           />
         </div>
@@ -77,23 +77,58 @@ export function Footer() {
 
           {/* Contact Info Section */}
           <div className="w-full max-w-[274px]">
-            <div>
-              <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.businessHours.title')}</h3>
-              <p className="text-[#FAFAFA] opacity-70 font-normal text-[14px] leading-[20px] tracking-[0px]">
-                {t('contact.businessHours.hours')}
-              </p>
+            <div className="flex items-start gap-[8px]">
+              <div className="w-4 h-4 mt-[12px]">
+                <Image
+                  src="/support/icons/clock-contact.png"
+                  alt="Clock icon"
+                  width={16}
+                  height={16}
+                  className="object-contain w-full h-full invert brightness-0"
+                />
+              </div>
+              <div>
+                <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.businessHours.title')}</h3>
+                <p className="text-[#FAFAFA] opacity-70 font-normal text-[14px] leading-[20px] tracking-[0px]">
+                  {t('contact.businessHours.hours')}
+                </p>
+              </div>
             </div>
-            <div className="mt-6">
-              <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.email.title')}</h3>
-              <a href="mailto:support@acetravel.com" className="text-[#FAFAFA] opacity-70 hover:opacity-100 hover:text-white font-normal text-[14px] leading-[20px] tracking-[0px]">
-                {t('contact.email.address')}
-              </a>
+
+            <div className="flex items-start gap-[8px] mt-6">
+              <div className="w-4 h-4 mt-[12px]">
+                <Image
+                  src="/support/icons/email-contact.png"
+                  alt="Email icon"
+                  width={16}
+                  height={16}
+                  className="object-contain w-full h-full invert brightness-0"
+                />
+              </div>
+              <div>
+                <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.email.title')}</h3>
+                <a href="mailto:support@acetravel.com" className="text-[#FAFAFA] opacity-70 hover:opacity-100 hover:text-white font-normal text-[14px] leading-[20px] tracking-[0px]">
+                  {t('contact.email.address')}
+                </a>
+              </div>
             </div>
-            <div className="mt-6">
-              <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.phone.title')}</h3>
-              <a href="tel:+1(800)123-4567" className="text-[#FAFAFA] opacity-70 hover:opacity-100 hover:text-white font-normal text-[14px] leading-[20px] tracking-[0px]">
-                {t('contact.phone.number')}
-              </a>
+
+            <div className="flex items-start gap-[8px] mt-6">
+              <div className="w-4 h-4 mt-[12px]">
+                <Image
+                  src="/support/icons/phone-contact.png"
+                  alt="Phone icon"
+                  width={16}
+                  height={16}
+                  className="object-contain w-full h-full invert brightness-0"
+                />
+              </div>
+              <div>
+                <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-[8px]">{t('contact.phone.title')}</h3>
+                <a href="tel:+1(800)123-4567" className="text-[#FAFAFA] opacity-70 hover:opacity-100 hover:text-white font-normal text-[14px] leading-[20px] tracking-[0px]">
+                  {t('contact.phone.number')}
+                </a>
+              </div>
             </div>
           </div>
 
