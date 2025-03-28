@@ -113,50 +113,57 @@ export function EditMiceCardDialog({ miceCard }: EditMiceCardDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Pencil className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="hover:bg-blue-50">
+          <Pencil className="h-4 w-4 text-blue-600" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit MICE Card</DialogTitle>
+      <DialogContent className="sm:max-w-[550px] p-4 sm:p-6 w-[95%]">
+        <DialogHeader className="space-y-3 mb-4 sm:mb-6">
+          <DialogTitle className="text-xl sm:text-2xl font-semibold">Edit MICE Card</DialogTitle>
+          <p className="text-sm text-muted-foreground">Update the information below to modify this MICE card.</p>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="label"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Label</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Card label..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="label"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Label</FormLabel>
+                    <FormControl>
+                      <Input className="border-gray-200 focus:border-blue-500" placeholder="Card label..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Date</FormLabel>
+                    <FormControl>
+                      <Input className="border-gray-200 focus:border-blue-500" type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
+                  <FormLabel className="text-sm font-medium">Content</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Card content..." {...field} />
+                    <Textarea 
+                      className="min-h-[120px] border-gray-200 focus:border-blue-500" 
+                      placeholder="Card content..." 
+                      {...field} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,16 +174,16 @@ export function EditMiceCardDialog({ miceCard }: EditMiceCardDialogProps) {
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel className="text-sm font-medium">Image</FormLabel>
                   <FormControl>
                     <div className="space-y-4">
                       {field.value && (
-                        <div className="relative w-full h-48">
+                        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
                           <Image
                             src={field.value}
                             alt="Preview"
                             fill
-                            className="rounded-lg object-cover"
+                            className="object-cover hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       )}
@@ -191,7 +198,7 @@ export function EditMiceCardDialog({ miceCard }: EditMiceCardDialogProps) {
                         type="button" 
                         variant="outline" 
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full"
+                        className="w-full h-12 border-dashed border-2 hover:border-blue-500 hover:bg-blue-50/50 transition-colors"
                         disabled={uploading}
                       >
                         {uploading ? (
@@ -212,59 +219,78 @@ export function EditMiceCardDialog({ miceCard }: EditMiceCardDialogProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="imageAlt"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image Alt Text</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Image alt text..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="order"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Order</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      {...field}
-                      onChange={e => field.onChange(parseInt(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="imageAlt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Image Alt Text</FormLabel>
+                    <FormControl>
+                      <Input className="border-gray-200 focus:border-blue-500" placeholder="Image alt text..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="order"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Order</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        className="border-gray-200 focus:border-blue-500"
+                        {...field}
+                        onChange={e => field.onChange(parseInt(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="isActive"
               render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
+                <FormItem className="flex items-center gap-3 rounded-lg border border-gray-200 p-4">
                   <FormControl>
                     <input
                       type="checkbox"
                       checked={field.value}
                       onChange={field.onChange}
+                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                   </FormControl>
-                  <FormLabel className="!mt-0">Active</FormLabel>
+                  <div className="space-y-1">
+                    <FormLabel className="!mt-0 text-sm font-medium">Active</FormLabel>
+                    <p className="text-[13px] text-muted-foreground">
+                      When checked, this MICE card will be visible on the website.
+                    </p>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-between">
-              <Button type="button" variant="destructive" onClick={onDelete}>
+            <div className="flex justify-between pt-2">
+              <Button 
+                type="button" 
+                variant="destructive" 
+                onClick={onDelete}
+                className="bg-red-500 hover:bg-red-600 transition-colors"
+              >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete
+                Delete Card
               </Button>
-              <Button type="submit">Update MICE Card</Button>
+              <Button 
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+                Update MICE Card
+              </Button>
             </div>
           </form>
         </Form>

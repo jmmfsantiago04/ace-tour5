@@ -8,8 +8,11 @@ import Image from 'next/image';
 
 interface FAQ {
     id: string;
-    title: string;
-    content: string;
+    titleEn: string;
+    titleKo: string;
+    contentEn: string;
+    contentKo: string;
+    category?: string;
 }
 
 interface SupportFAQProps {
@@ -26,23 +29,31 @@ export function SupportFAQ({ faqs }: SupportFAQProps) {
     const defaultCards = [
         {
             id: "1",
-            title: t('cards.card1.title'),
-            content: t('cards.card1.content')
+            titleEn: t('cards.card1.title'),
+            titleKo: t('cards.card1.title'),
+            contentEn: t('cards.card1.content'),
+            contentKo: t('cards.card1.content')
         },
         {
             id: "2",
-            title: t('cards.card2.title'),
-            content: t('cards.card2.content')
+            titleEn: t('cards.card2.title'),
+            titleKo: t('cards.card2.title'),
+            contentEn: t('cards.card2.content'),
+            contentKo: t('cards.card2.content')
         },
         {
             id: "3",
-            title: t('cards.card3.title'),
-            content: t('cards.card3.content')
+            titleEn: t('cards.card3.title'),
+            titleKo: t('cards.card3.title'),
+            contentEn: t('cards.card3.content'),
+            contentKo: t('cards.card3.content')
         },
         {
             id: "4",
-            title: t('cards.card4.title'),
-            content: t('cards.card4.content')
+            titleEn: t('cards.card4.title'),
+            titleKo: t('cards.card4.title'),
+            contentEn: t('cards.card4.content'),
+            contentKo: t('cards.card4.content')
         }
     ];
 
@@ -50,7 +61,7 @@ export function SupportFAQ({ faqs }: SupportFAQProps) {
     const displayCards = (faqs?.length ? faqs : defaultCards).slice(0, 6);
 
     return (
-        <section className="relative flex justify-center w-full pt-[100px] min-h-screen bg-[#A3D5FF]/30">
+        <section className="relative flex justify-center w-full pt-[100px] min-h-screen">
             {/* Background pattern - limited height */}
             <div className="absolute inset-x-0 top-0 w-full h-[300px] sm:h-[400px] md:h-[648px] lg:h-[750px] overflow-hidden">
                 <div className="absolute w-full h-full">
@@ -105,7 +116,7 @@ export function SupportFAQ({ faqs }: SupportFAQProps) {
                                 className="flex items-center justify-between w-full min-h-[3.5rem] xs:min-h-[4rem] sm:min-h-[5rem] py-[0.875rem] xs:py-[1rem] sm:py-[1.5rem] px-[0.75rem] xs:px-[1rem] bg-white rounded-[1rem] xs:rounded-[1.375rem] text-left hover:bg-gray-50 transition-colors border border-[#E5E7EB] gap-[0.75rem] xs:gap-[1.25rem]"
                             >
                                 <span className="text-[0.875rem] xs:text-[1rem] font-medium leading-[1.4] xs:leading-[1.5] tracking-[0%] text-[#262626]">
-                                    {card.title}
+                                    {isEnglish ? card.titleEn : card.titleKo}
                                 </span>
                                 <span className="flex-shrink-0">
                                     <motion.div
@@ -138,12 +149,14 @@ export function SupportFAQ({ faqs }: SupportFAQProps) {
                                     opacity: openIndex === index ? 1 : 0
                                 }}
                                 transition={{ duration: 0.3 }}
-                                className="overflow-hidden bg-white rounded-b-[1rem] xs:rounded-b-[1.375rem]"
+                                className="overflow-hidden"
                             >
-                                <div className="p-4 xs:p-6 pt-0">
-                                    <p className="text-[0.8125rem] xs:text-[0.875rem] sm:text-[1rem] text-[#262626]/80 leading-[1.6]">
-                                        {card.content}
-                                    </p>
+                                <div className="bg-white border-x border-b border-[#E5E7EB] rounded-[1rem] xs:rounded-[1.375rem] mt-[-1px]">
+                                    <div className="p-4 xs:p-6 mt-[15px] space-y-4">
+                                        <p className="text-[0.8125rem] xs:text-[0.875rem] sm:text-[1rem] text-[#262626]/80 leading-[1.6]">
+                                            {isEnglish ? card.contentEn : card.contentKo}
+                                        </p>
+                                    </div>
                                 </div>
                             </motion.div>
                         </motion.div>

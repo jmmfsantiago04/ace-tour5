@@ -1,5 +1,5 @@
 export type InquiryType = 'TRAVEL_CONSULTATION' | 'SHUTTLE_SERVICE' | 'MICE_SERVICE'
-export type InquiryStatus = 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED'
+export type InquiryStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED'
 
 export interface SupportInquiry {
   id: string

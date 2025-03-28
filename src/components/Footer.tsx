@@ -2,17 +2,36 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { FaFacebook, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { useActionState } from '@/hooks/useActionState';
+import { subscribeToNewsletter } from '@/app/actions/newsletter';
+import { toast } from 'sonner';
 
 export function Footer() {
   const t = useTranslations('Footer');
   const params = useParams();
   const locale = params.locale as string;
+  const pathname = usePathname();
+  const isOnSupportPage = pathname?.includes('support');
+  const [state, formAction] = useActionState(subscribeToNewsletter, {
+    onSuccess: (data) => {
+      if (data.message) {
+        toast.success(data.message);
+      }
+    },
+    onError: (data) => {
+      if (data.errors?.email) {
+        toast.error(data.errors.email[0]);
+      } else if (data.errors?.form) {
+        toast.error(data.errors.form[0]);
+      }
+    }
+  });
 
   return (
-    <div className="flex justify-center w-full px-4 mb-[35px] sm:px-6 lg:px-0 bg-white">
+    <div className={`flex justify-center w-full px-4 sm:px-6 lg:px-0 ${isOnSupportPage ? '-mt-[440px]' : 'bg-white'}`}>
       <footer className="bg-[#1B365D] text-white w-full max-w-[1232px] min-h-[397px] rounded-[22px] pt-[60px] px-4 sm:px-6 lg:pl-[80px] relative overflow-hidden">
         {/* Pattern Background */}
         <div className="absolute w-full max-w-[981px] h-[564px] overflow-hidden left-1/2 -translate-x-1/2">
@@ -40,16 +59,20 @@ export function Footer() {
               <p className="font-medium mb-[15px] mt-[55px] text-[16px] leading-[24px] tracking-[0%] text-[#FFFFFF80]">
                 {t('newsletter.description')}
               </p>
-              <div className="relative w-full max-w-[328px] overflow-hidden rounded-[8px]">
+              <form action={formAction} className="relative w-full max-w-[328px] overflow-hidden rounded-[8px]">
                 <input
                   type="email"
+                  name="email"
                   placeholder={t('newsletter.placeholder')}
                   className="h-[40px] w-full pl-[16px] text-black bg-white outline-none pr-[132px] font-medium text-[14px] leading-[20px] tracking-[0px] placeholder:font-medium placeholder:text-[14px] placeholder:leading-[20px] placeholder:tracking-[0px] py-[10px]"
                 />
-                <button className="absolute top-0 right-0 w-[122px] h-[40px] bg-[#F6B600] text-white font-medium hover:bg-[#e5a912] transition-colors text-[16px] leading-[24px] tracking-[0%] flex items-center justify-center rounded-[8px]">
+                <button 
+                  type="submit"
+                  className="absolute top-0 right-0 w-[122px] h-[40px] bg-[#F6B600] text-white font-medium hover:bg-[#e5a912] transition-colors text-[16px] leading-[24px] tracking-[0%] flex items-center justify-center rounded-[8px]"
+                >
                   {t('newsletter.button')}
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 

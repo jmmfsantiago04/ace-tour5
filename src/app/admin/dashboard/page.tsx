@@ -1,9 +1,13 @@
+'use client'
+
 import { 
   getSupportInquiries, 
   getFAQs, 
   getMiceCards, 
-  getReviews 
+  getReviews
 } from '@/app/actions/admin'
+import { getNewsletterSubscriptions, deleteNewsletterSubscription } from '@/app/actions/newsletter'
+import { deleteInquiry } from '@/app/actions/admin/deleteInquiry'
 import {
   Table,
   TableBody,
@@ -18,6 +22,14 @@ import {
   TabsList, 
   TabsTrigger 
 } from '@/components/ui/tabs'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
 import { format } from 'date-fns'
 import { SupportInquiry, InquiryStatus } from '@/types/support'
 import { 
@@ -25,6 +37,10 @@ import {
   CheckCircle2, 
   AlertCircle, 
   XCircle,
+  Loader2,
+  Trash2,
+  LogOut,
+  Download,
 } from 'lucide-react'
 import { AddFAQDialog } from '@/components/admin/AddFAQDialog'
 import { AddMiceCardDialog } from '@/components/admin/AddMiceCardDialog'
@@ -32,46 +48,208 @@ import { AddReviewDialog } from '@/components/admin/AddReviewDialog'
 import { EditFAQDialog } from '@/components/admin/EditFAQDialog'
 import { EditMiceCardDialog } from '@/components/admin/EditMiceCardDialog'
 import { EditReviewDialog } from '@/components/admin/EditReviewDialog'
+import { InquiryDialog } from '@/components/admin/InquiryDialog'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { updateInquiryStatus } from '@/app/actions/admin/updateInquiryStatus'
+import { toast } from 'sonner'
+import { logout } from '@/app/actions/admin/logout'
+import { PasswordResetDialog } from '@/components/admin/PasswordResetDialog'
+import { useRouter } from 'next/navigation'
 
-export default async function DashboardPage() {
-  const { inquiries, error: inquiriesError } = await getSupportInquiries()
-  const { data: faqs, error: faqsError } = await getFAQs()
-  const { data: miceCards, error: miceCardsError } = await getMiceCards()
-  const { data: reviews, error: reviewsError } = await getReviews()
+const statusConfig: Record<InquiryStatus, { label: string; icon: React.ReactNode; bg: string }> = {
+  'PENDING': { 
+    label: 'Pending',
+    icon: <Clock className="h-4 w-4" />,
+    bg: 'bg-yellow-100 text-yellow-800'
+  },
+  'IN_PROGRESS': { 
+    label: 'In Progress',
+    icon: <AlertCircle className="h-4 w-4" />,
+    bg: 'bg-blue-100 text-blue-800'
+  },
+  'COMPLETED': { 
+    label: 'Completed',
+    icon: <CheckCircle2 className="h-4 w-4" />,
+    bg: 'bg-green-100 text-green-800'
+  }
+}
 
-  if (inquiriesError || faqsError || miceCardsError || reviewsError) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-red-500">Failed to load data</p>
-      </div>
-    )
+export default function DashboardPage() {
+  const router = useRouter()
+  const [selectedInquiry, setSelectedInquiry] = useState<SupportInquiry | null>(null)
+  const [inquiries, setInquiries] = useState<SupportInquiry[]>([])
+  const [faqs, setFaqs] = useState<any[]>([])
+  const [miceCards, setMiceCards] = useState<any[]>([])
+  const [reviews, setReviews] = useState<any[]>([])
+  const [newsletters, setNewsletters] = useState<any[]>([])
+  const [error, setError] = useState<string | null>(null)
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null)
+  const [statusFilter, setStatusFilter] = useState<InquiryStatus | 'ALL'>('ALL')
+  const [deletingInquiry, setDeletingInquiry] = useState<string | null>(null)
+  const [deletingNewsletter, setDeletingNewsletter] = useState<string | null>(null)
+
+  const loadData = useCallback(async () => {
+    try {
+      const [inquiriesRes, faqsRes, miceCardsRes, reviewsRes, newslettersRes] = await Promise.all([
+        getSupportInquiries(),
+        getFAQs(),
+        getMiceCards(),
+        getReviews(),
+        getNewsletterSubscriptions()
+      ])
+
+      if (inquiriesRes.error || faqsRes.error || miceCardsRes.error || reviewsRes.error || newslettersRes.error) {
+        setError('Failed to load data')
+        return
+      }
+
+      setInquiries(inquiriesRes.inquiries || [])
+      setFaqs(faqsRes.data || [])
+      setMiceCards(miceCardsRes.data || [])
+      setReviews(reviewsRes.data || [])
+      setNewsletters(newslettersRes.subscriptions || [])
+    } catch (err) {
+      setError('Failed to load data')
+    }
+  }, [])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  const handleStatusChange = useCallback(async (inquiry: SupportInquiry, newStatus: InquiryStatus) => {
+    try {
+      setUpdatingStatus(inquiry.id)
+      const result = await updateInquiryStatus({
+        id: inquiry.id,
+        status: newStatus
+      })
+
+      if (result.success) {
+        // Update the inquiry in the list
+        setInquiries(prev => prev.map(item => 
+          item.id === inquiry.id ? { ...item, status: newStatus } : item
+        ))
+        
+        // Update the selected inquiry if it's open
+        if (selectedInquiry?.id === inquiry.id) {
+          setSelectedInquiry(prev => prev ? { ...prev, status: newStatus } : null)
+        }
+        
+        toast.success('Status updated successfully')
+      } else {
+        toast.error('Failed to update status')
+      }
+    } catch (error) {
+      toast.error('Failed to update status')
+    } finally {
+      setUpdatingStatus(null)
+    }
+  }, [selectedInquiry])
+
+  const handleDeleteInquiry = useCallback(async (inquiry: SupportInquiry) => {
+    try {
+      setDeletingInquiry(inquiry.id)
+      const result = await deleteInquiry({ id: inquiry.id })
+
+      if (result.success) {
+        setInquiries(prev => prev.filter(item => item.id !== inquiry.id))
+        toast.success('Inquiry deleted successfully')
+      } else {
+        toast.error('Failed to delete inquiry')
+      }
+    } catch (error) {
+      toast.error('Failed to delete inquiry')
+    } finally {
+      setDeletingInquiry(null)
+    }
+  }, [])
+
+  const handleDeleteNewsletter = useCallback(async (id: string) => {
+    try {
+      setDeletingNewsletter(id)
+      const result = await deleteNewsletterSubscription(id)
+
+      if (result.success) {
+        setNewsletters(prev => prev.filter(item => item.id !== id))
+        toast.success('Newsletter subscription deleted successfully')
+      } else {
+        toast.error('Failed to delete newsletter subscription')
+      }
+    } catch (error) {
+      toast.error('Failed to delete newsletter subscription')
+    } finally {
+      setDeletingNewsletter(null)
+    }
+  }, [])
+
+  const filteredInquiries = useMemo(() => {
+    if (statusFilter === 'ALL') return inquiries
+    return inquiries.filter(inquiry => inquiry.status === statusFilter)
+  }, [inquiries, statusFilter])
+
+  const handleLogout = async () => {
+    try {
+      const response = await logout()
+      if (response.success) {
+        router.push(response.redirectTo)
+      } else {
+        console.error('Logout failed')
+        router.push('/admin/login')
+      }
+    } catch (error) {
+      console.error('Error during logout:', error)
+      router.push('/admin/login')
+    }
   }
 
-  const statusStyles: Record<InquiryStatus, { bg: string; icon: React.ReactNode }> = {
-    'PENDING': { 
-      bg: 'bg-yellow-100 text-yellow-800',
-      icon: <Clock className="h-4 w-4" />
-    },
-    'IN_PROGRESS': { 
-      bg: 'bg-blue-100 text-blue-800',
-      icon: <AlertCircle className="h-4 w-4" />
-    },
-    'RESOLVED': { 
-      bg: 'bg-green-100 text-green-800',
-      icon: <CheckCircle2 className="h-4 w-4" />
-    },
-    'CLOSED': { 
-      bg: 'bg-gray-100 text-gray-800',
-      icon: <XCircle className="h-4 w-4" />
-    }
+  const handleDownloadNewsletterCSV = useCallback(() => {
+    // Create CSV content
+    const csvContent = [
+      ['Email', 'Subscription Date'], // CSV header
+      ...newsletters.map(sub => [
+        sub.email,
+        format(new Date(sub.createdAt), 'yyyy-MM-dd')
+      ])
+    ].map(row => row.join(',')).join('\n')
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `newsletter-subscriptions-${format(new Date(), 'yyyy-MM-dd')}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }, [newsletters])
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-red-500">{error}</p>
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 flex justify-between items-center">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <PasswordResetDialog />
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={handleLogout}
+              className="text-red-600 hover:text-red-800 hover:bg-red-100"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -81,13 +259,37 @@ export default async function DashboardPage() {
             <TabsTrigger value="faqs">FAQs</TabsTrigger>
             <TabsTrigger value="mice">MICE Cards</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="newsletters">Newsletter</TabsTrigger>
           </TabsList>
 
           {/* Support Inquiries Tab */}
           <TabsContent value="inquiries">
             <div className="bg-white shadow rounded-lg overflow-hidden">
               <div className="p-6">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Inquiries</h2>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-medium text-gray-900">Recent Inquiries</h2>
+                  <Select
+                    value={statusFilter}
+                    onValueChange={(value: InquiryStatus | 'ALL') => setStatusFilter(value)}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ALL">All Statuses</SelectItem>
+                      {Object.entries(statusConfig).map(([value, config]) => (
+                        <SelectItem 
+                          key={value} 
+                          value={value}
+                          className="flex items-center gap-2"
+                        >
+                          {config.icon}
+                          {config.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
@@ -98,11 +300,16 @@ export default async function DashboardPage() {
                         <TableHead className="w-[200px]">Email</TableHead>
                         <TableHead className="w-[120px]">Status</TableHead>
                         <TableHead>Inquiry</TableHead>
+                        <TableHead className="w-[100px]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {inquiries?.map((inquiry: SupportInquiry) => (
-                        <TableRow key={inquiry.id} className="hover:bg-gray-50">
+                      {filteredInquiries?.map((inquiry: SupportInquiry) => (
+                        <TableRow 
+                          key={inquiry.id} 
+                          className="hover:bg-gray-50 cursor-pointer"
+                          onClick={() => setSelectedInquiry(inquiry)}
+                        >
                           <TableCell className="whitespace-nowrap">
                             {format(new Date(inquiry.createdAt), 'MMM d, yyyy')}
                           </TableCell>
@@ -111,18 +318,75 @@ export default async function DashboardPage() {
                           </TableCell>
                           <TableCell>{inquiry.fullName}</TableCell>
                           <TableCell>
-                            <a href={`mailto:${inquiry.email}`} className="text-blue-600 hover:text-blue-800">
+                            <a 
+                              href={`mailto:${inquiry.email}`} 
+                              className="text-blue-600 hover:text-blue-800"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               {inquiry.email}
                             </a>
                           </TableCell>
                           <TableCell>
-                            <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${statusStyles[inquiry.status].bg}`}>
-                              {statusStyles[inquiry.status].icon}
-                              {inquiry.status}
-                            </span>
+                            <Select
+                              value={inquiry.status}
+                              onValueChange={(value: InquiryStatus) => {
+                                event?.stopPropagation()
+                                handleStatusChange(inquiry, value)
+                              }}
+                              disabled={updatingStatus === inquiry.id}
+                            >
+                              <SelectTrigger className={`w-[140px] ${statusConfig[inquiry.status].bg}`}>
+                                <SelectValue>
+                                  <span className="inline-flex items-center gap-2">
+                                    {updatingStatus === inquiry.id ? (
+                                      <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                      statusConfig[inquiry.status].icon
+                                    )}
+                                    {statusConfig[inquiry.status].label}
+                                  </span>
+                                </SelectValue>
+                              </SelectTrigger>
+                              <SelectContent>
+                                {Object.entries(statusConfig).map(([value, config]) => (
+                                  <SelectItem 
+                                    key={value} 
+                                    value={value}
+                                    className="flex items-center gap-2"
+                                  >
+                                    {config.icon}
+                                    {config.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </TableCell>
                           <TableCell className="max-w-md">
-                            <p className="truncate text-sm text-gray-600">{inquiry.inquiry}</p>
+                            <p className="truncate text-sm text-gray-600">
+                              {inquiry.inquiry.length > 100 
+                                ? `${inquiry.inquiry.substring(0, 100)}...` 
+                                : inquiry.inquiry}
+                            </p>
+                          </TableCell>
+                          <TableCell>
+                            {inquiry.status === 'COMPLETED' && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-red-600 hover:text-red-800 hover:bg-red-100"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleDeleteInquiry(inquiry)
+                                }}
+                                disabled={deletingInquiry === inquiry.id}
+                              >
+                                {deletingInquiry === inquiry.id ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  <Trash2 className="h-4 w-4" />
+                                )}
+                              </Button>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -148,8 +412,8 @@ export default async function DashboardPage() {
                         <TableHead className="w-[100px]">Order</TableHead>
                         <TableHead className="w-[150px]">Status</TableHead>
                         <TableHead className="w-[150px]">Category</TableHead>
-                        <TableHead className="w-[150px]">Language</TableHead>
-                        <TableHead>Title</TableHead>
+                        <TableHead>English Title</TableHead>
+                        <TableHead>Korean Title</TableHead>
                         <TableHead className="w-[100px]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -165,19 +429,22 @@ export default async function DashboardPage() {
                             </span>
                           </TableCell>
                           <TableCell>{faq.category || '-'}</TableCell>
-                          <TableCell className="capitalize">{faq.locale}</TableCell>
                           <TableCell className="max-w-md">
-                            <p className="truncate text-sm text-gray-600">{faq.title}</p>
+                            <p className="truncate text-sm text-gray-600">{faq.titleEn}</p>
+                          </TableCell>
+                          <TableCell className="max-w-md">
+                            <p className="truncate text-sm text-gray-600">{faq.titleKo}</p>
                           </TableCell>
                           <TableCell>
                             <EditFAQDialog faq={{
                               id: faq.id,
-                              title: faq.title,
-                              content: faq.content,
-                              isActive: faq.isActive,
+                              titleEn: faq.titleEn,
+                              titleKo: faq.titleKo,
+                              contentEn: faq.contentEn,
+                              contentKo: faq.contentKo,
+                              category: faq.category || undefined,
                               order: faq.order,
-                              locale: faq.locale,
-                              category: faq.category || undefined
+                              isActive: faq.isActive
                             }} />
                           </TableCell>
                         </TableRow>
@@ -301,7 +568,79 @@ export default async function DashboardPage() {
               </div>
             </div>
           </TabsContent>
+
+          {/* Newsletter Tab */}
+          <TabsContent value="newsletters">
+            <div className="bg-white shadow rounded-lg overflow-hidden">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-medium text-gray-900">Newsletter Subscriptions</h2>
+                  <Button
+                    variant="outline"
+                    onClick={handleDownloadNewsletterCSV}
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Download CSV
+                  </Button>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="w-[200px]">Date</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead className="w-[100px]">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {newsletters?.map((subscription) => (
+                        <TableRow key={subscription.id} className="hover:bg-gray-50">
+                          <TableCell className="whitespace-nowrap">
+                            {format(new Date(subscription.createdAt), 'MMM d, yyyy')}
+                          </TableCell>
+                          <TableCell>
+                            <a 
+                              href={`mailto:${subscription.email}`} 
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              {subscription.email}
+                            </a>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-600 hover:text-red-800 hover:bg-red-100"
+                              onClick={() => handleDeleteNewsletter(subscription.id)}
+                              disabled={deletingNewsletter === subscription.id}
+                            >
+                              {deletingNewsletter === subscription.id ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
+
+        {/* Inquiry Dialog */}
+        {selectedInquiry && (
+          <InquiryDialog
+            inquiry={selectedInquiry}
+            open={!!selectedInquiry}
+            onOpenChange={(open) => !open && setSelectedInquiry(null)}
+            onStatusChange={handleStatusChange}
+          />
+        )}
       </main>
     </div>
   )

@@ -20,7 +20,7 @@ export default async function SupportPage({ params }: SupportPageProps) {
     const { data: faqs } = await getActiveFAQs(locale);
 
     return (
-        <main className="min-h-screen bg-[#A3D5FF]/30">
+        <main className="min-h-screen bg-[#A3D5FF]/30 pb-[432px]  ">
             <SupportHero />
             <SupportFAQ faqs={faqs} />
         </main>

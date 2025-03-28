@@ -59,17 +59,17 @@ model MiceCard {
 
 model FAQ {
   id          String   @id @default(cuid())
-  title       String   @db.Text
-  content     String   @db.Text
+  titleEn     String   @db.Text
+  titleKo     String   @db.Text
+  contentEn   String   @db.Text
+  contentKo   String   @db.Text
+  category    String?  // Optional category for grouping FAQs
   isActive    Boolean  @default(true)
   order       Int      @default(0)
-  category    String?  // Optional category for grouping FAQs
-  locale      String   @default("en") // For handling different languages
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([order, isActive])
-  @@index([locale, isActive])
 }
 
 enum BookingStatus {
@@ -98,6 +98,14 @@ model Support {
 enum InquiryStatus {
   PENDING
   IN_PROGRESS
-  RESOLVED
-  CLOSED
+  COMPLETED
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
 }

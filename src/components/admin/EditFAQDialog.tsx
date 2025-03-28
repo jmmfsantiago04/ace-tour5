@@ -28,10 +28,11 @@ import { Pencil, Trash2 } from 'lucide-react'
 
 const editFAQSchema = z.object({
   id: z.string(),
-  title: z.string().min(1, "Title is required"),
-  content: z.string().min(1, "Content is required"),
+  titleEn: z.string().min(1, "English title is required"),
+  titleKo: z.string().min(1, "Korean title is required"),
+  contentEn: z.string().min(1, "English content is required"),
+  contentKo: z.string().min(1, "Korean content is required"),
   category: z.string().optional(),
-  locale: z.string(),
   order: z.number(),
   isActive: z.boolean(),
 })
@@ -82,114 +83,179 @@ export function EditFAQDialog({ faq }: EditFAQDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Pencil className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="hover:bg-blue-50">
+          <Pencil className="h-4 w-4 text-blue-600" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit FAQ</DialogTitle>
+      <DialogContent className="sm:max-w-[800px] p-4 sm:p-6 max-h-[90vh] overflow-y-auto w-[95%]">
+        <DialogHeader className="space-y-3 mb-4 sm:mb-6">
+          <DialogTitle className="text-xl sm:text-2xl font-semibold">Edit FAQ</DialogTitle>
+          <p className="text-sm text-muted-foreground">Update the information below to modify this FAQ entry.</p>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="FAQ title..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="FAQ content..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category (Optional)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Category..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="locale"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Language</FormLabel>
-                  <FormControl>
-                    <select
-                      className="w-full border rounded-md p-2"
-                      {...field}
-                    >
-                      <option value="en">English</option>
-                      <option value="ko">Korean</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="order"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Order</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      {...field}
-                      onChange={e => field.onChange(parseInt(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* English Section */}
+              <div className="space-y-4">
+                <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                  <h3 className="text-sm font-medium text-blue-800 mb-4">English Version</h3>
+                  <FormField
+                    control={form.control}
+                    name="titleEn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Title (English)</FormLabel>
+                        <FormControl>
+                          <Input 
+                            className="border-gray-200 focus:border-blue-500" 
+                            placeholder="FAQ title in English..." 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="contentEn"
+                    render={({ field }) => (
+                      <FormItem className="mt-4">
+                        <FormLabel className="text-sm font-medium">Content (English)</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            className="min-h-[200px] border-gray-200 focus:border-blue-500" 
+                            placeholder="FAQ content in English..." 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Korean Section */}
+              <div className="space-y-4">
+                <div className="bg-red-50 p-4 rounded-lg">
+                  <h3 className="text-sm font-medium text-red-800 mb-4">Korean Version</h3>
+                  <FormField
+                    control={form.control}
+                    name="titleKo"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Title (Korean)</FormLabel>
+                        <FormControl>
+                          <Input 
+                            className="border-gray-200 focus:border-blue-500" 
+                            placeholder="FAQ title in Korean..." 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="contentKo"
+                    render={({ field }) => (
+                      <FormItem className="mt-4">
+                        <FormLabel className="text-sm font-medium">Content (Korean)</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            className="min-h-[200px] border-gray-200 focus:border-blue-500" 
+                            placeholder="FAQ content in Korean..." 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Category (Optional)</FormLabel>
+                    <FormControl>
+                      <Input 
+                        className="border-gray-200 focus:border-blue-500" 
+                        placeholder="Category..." 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="order"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium">Order</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        className="border-gray-200 focus:border-blue-500"
+                        {...field}
+                        onChange={e => field.onChange(parseInt(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="isActive"
               render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
+                <FormItem className="flex items-center gap-3 rounded-lg border border-gray-200 p-4">
                   <FormControl>
                     <input
                       type="checkbox"
                       checked={field.value}
                       onChange={field.onChange}
+                      className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                     />
                   </FormControl>
-                  <FormLabel className="!mt-0">Active</FormLabel>
+                  <div className="space-y-1">
+                    <FormLabel className="!mt-0 text-sm font-medium">Active</FormLabel>
+                    <p className="text-[13px] text-muted-foreground">
+                      When checked, this FAQ will be visible on the website.
+                    </p>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-between">
-              <Button type="button" variant="destructive" onClick={onDelete}>
+
+            <div className="flex justify-between pt-2">
+              <Button 
+                type="button" 
+                variant="destructive" 
+                onClick={onDelete}
+                className="bg-red-500 hover:bg-red-600 transition-colors"
+              >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete
+                Delete FAQ
               </Button>
-              <Button type="submit">Update FAQ</Button>
+              <Button 
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+                Update FAQ
+              </Button>
             </div>
           </form>
         </Form>

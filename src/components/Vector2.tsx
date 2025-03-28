@@ -1,7 +1,10 @@
+'use client'
+
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 type Vector2Props = {
   className?: string
@@ -17,8 +20,22 @@ export const Vector2: React.FC<Vector2Props> = (props) => {
     imgClassName,
   } = props
 
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+
   return (
-    <div
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      style={{ 
+        opacity: scrollYProgress,
+        y: useTransform(scrollYProgress, [0, 1], [50, 0])
+      }}
       className={clsx(
         'relative flex items-center justify-center',
         className,
@@ -42,6 +59,6 @@ export const Vector2: React.FC<Vector2Props> = (props) => {
           height={148.5}
         />
       </div>
-    </div>
+    </motion.div>
   )
 } 

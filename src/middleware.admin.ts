@@ -8,20 +8,41 @@ export async function middleware(req: NextRequest) {
     return null;
   }
 
-  const token = await getToken({ req });
+  const token = await getToken({ 
+    req,
+    cookieName: 'next-auth.session-token'
+  });
+  
   const isAuth = !!token;
   const pathname = req.nextUrl.pathname;
   const isAuthPage = pathname === '/admin/login';
   const isAdminRoot = pathname === '/admin';
+  const isDashboard = pathname === '/admin/dashboard';
+
+  // Helper function for redirects
+  const redirectTo = (path: string) => {
+    const url = new URL(path, req.url);
+    return NextResponse.redirect(url, { status: 302 });
+  };
+
+  // If trying to access dashboard and not authenticated, redirect to login
+  if (isDashboard && !isAuth) {
+    return redirectTo('/admin/login');
+  }
+
+  // If trying to access dashboard without admin role, redirect to home
+  if (isDashboard && (!isAuth || token?.role !== 'ADMIN')) {
+    return redirectTo('/');
+  }
 
   // If trying to access /admin directly, redirect to login first
   if (isAdminRoot && !isAuth) {
-    return NextResponse.redirect(new URL('/admin/login', req.url));
+    return redirectTo('/admin/login');
   }
 
-  // If on login page and already authenticated, redirect to admin
+  // If on login page and already authenticated, redirect to dashboard
   if (isAuthPage && isAuth && token.role === 'ADMIN') {
-    return NextResponse.redirect(new URL('/admin', req.url));
+    return redirectTo('/admin/dashboard');
   }
 
   // If not authenticated and trying to access any admin route (except login), redirect to login
@@ -30,15 +51,12 @@ export async function middleware(req: NextRequest) {
     if (req.nextUrl.search) {
       from += req.nextUrl.search;
     }
-
-    return NextResponse.redirect(
-      new URL(`/admin/login?from=${encodeURIComponent(from)}`, req.url)
-    );
+    return redirectTo(`/admin/login?from=${encodeURIComponent(from)}`);
   }
 
   // If authenticated but not an admin, redirect to home
   if (isAuth && token.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/', req.url));
+    return redirectTo('/');
   }
 
   // Allow access to login page when not authenticated
@@ -52,7 +70,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Default: redirect to login
-  return NextResponse.redirect(new URL('/admin/login', req.url));
+  return redirectTo('/admin/login');
 }
 
 export const config = {

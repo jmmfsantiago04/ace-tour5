@@ -19,12 +19,13 @@ type User = {
 // Extend the built-in types
 declare module "next-auth" {
   interface User {
+    id: string;
     role: string;
-    password: string;
   }
   
   interface Session {
     user: {
+      id: string;
       role: string;
     } & DefaultSession["user"]
   }
@@ -32,6 +33,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT {
+    id: string;
     role: string;
   }
 }
@@ -39,6 +41,7 @@ declare module "next-auth/jwt" {
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   pages: {
     signIn: "/admin/login",
@@ -59,7 +62,7 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email
           }
-        }) as User | null;
+        });
 
         if (!user || user.role !== "ADMIN") {
           return null;
@@ -79,7 +82,6 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
-          password: user.password
         };
       }
     })
@@ -87,71 +89,44 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return {
-          ...token,
-          role: user.role,
-        };
+        token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          role: token.role,
-        },
-      };
+      if (token) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.role = token.role;
+      }
+      return session;
     },
   },
 };
 
-type SignInResponse = {
-  success: boolean;
-  error?: string;
-};
-
-export async function signIn(credentials: { email: string; password: string }): Promise<SignInResponse> {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: credentials.email
-    }
-  }) as User | null;
-
-  if (!user || user.role !== "ADMIN") {
-    return { success: false, error: "Invalid credentials" };
+export async function getSession() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get('next-auth.session-token');
+  
+  if (!sessionCookie?.value) {
+    return null;
   }
 
-  const isPasswordValid = await compare(credentials.password, user.password);
-
-  if (!isPasswordValid) {
-    return { success: false, error: "Invalid credentials" };
+  try {
+    const session = JSON.parse(sessionCookie.value);
+    return {
+      user: {
+        email: session.email,
+        name: session.name,
+        role: session.role
+      }
+    };
+  } catch (error) {
+    console.error('Error parsing session:', error);
+    return null;
   }
-
-  // Create a session token
-  const token: JWT = {
-    name: user.name || undefined,
-    email: user.email,
-    picture: undefined,
-    sub: user.id,
-    role: user.role,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
-    jti: crypto.randomUUID()
-  };
-
-  // Store the token in cookies
-  const cookieStore = cookies();
-  const cookieValue = JSON.stringify(token);
-  const maxAge = 24 * 60 * 60; // 24 hours
-
-  // Set the cookie using Response headers
-  const response = new Response(null, {
-    status: 200,
-    headers: {
-      'Set-Cookie': `next-auth.session-token=${cookieValue}; Path=/; HttpOnly; Secure=${process.env.NODE_ENV === 'production'}; SameSite=Lax; Max-Age=${maxAge}`
-    }
-  });
-
-  return { success: true };
 } 

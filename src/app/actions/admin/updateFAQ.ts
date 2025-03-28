@@ -6,10 +6,11 @@ import { z } from 'zod'
 
 const updateFAQSchema = z.object({
   id: z.string(),
-  title: z.string().min(1, "Title is required"),
-  content: z.string().min(1, "Content is required"),
+  titleEn: z.string().min(1, "English title is required"),
+  titleKo: z.string().min(1, "Korean title is required"),
+  contentEn: z.string().min(1, "English content is required"),
+  contentKo: z.string().min(1, "Korean content is required"),
   category: z.string().optional(),
-  locale: z.string(),
   order: z.number(),
   isActive: z.boolean(),
 })

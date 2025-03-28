@@ -47,7 +47,7 @@ export function SupportHero({ id }: Props) {
     ];
 
     return (
-        <section className="relative flex justify-center w-full min-h-screen bg-[#A3D5FF]/30">  
+        <section className="relative flex justify-center w-full min-h-screen">  
             {/* Background pattern - limited height */}
             <div className="absolute inset-x-0 top-0 w-full h-[300px] sm:h-[400px] md:h-[648px] lg:h-[750px] overflow-hidden">
                 <div className="absolute w-full h-full">
