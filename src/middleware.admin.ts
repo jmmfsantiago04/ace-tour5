@@ -3,8 +3,13 @@ import { getToken } from 'next-auth/jwt';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  // Skip middleware for API routes
-  if (req.nextUrl.pathname.startsWith('/api')) {
+  // Skip middleware for non-admin API routes
+  if (req.nextUrl.pathname.includes('/api/checkout')) {
+    return null;
+  }
+
+  // Skip middleware for API routes that don't start with /api/admin
+  if (req.nextUrl.pathname.startsWith('/api') && !req.nextUrl.pathname.startsWith('/api/admin')) {
     return null;
   }
 
@@ -78,7 +83,7 @@ export const config = {
     // Match admin routes
     '/admin',
     '/admin/:path*',
-    // Match API routes
-    '/api/:path*'
+    // Match admin API routes only
+    '/api/admin/:path*'
   ]
 }; 

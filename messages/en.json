@@ -253,5 +253,11 @@
   "Index": {
     "title": "Ace Tour",
     "description": "Your Travel Partner"
+  },
+
+  "Success": {
+    "title": "Payment Successful!",
+    "message": "Thank you for your booking. We have sent you an email with your booking details.",
+    "close": "Close"
   }
 } 

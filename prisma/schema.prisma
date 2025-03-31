@@ -109,3 +109,39 @@ model Newsletter {
 
   @@index([createdAt])
 }
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  stripeId      String       @unique // Stripe checkout session ID
+  customerEmail String
+  customerName  String?
+  tripType      String       // "one-way" or "round-trip"
+  from          String
+  to            String
+  departingDate DateTime
+  returningDate DateTime?
+  departureTime String
+  returnTime    String?
+  passengers    Int
+  address       String?
+  price         Float
+  status        BookingStatus @default(CONFIRMED)
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentId     String?      // Stripe payment intent ID
+  paymentMethod String?      // e.g., "card", "ideal", etc.
+  paidAt        DateTime?    // When the payment was confirmed
+  refundedAt    DateTime?    // In case of refunds
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([createdAt])
+  @@index([stripeId])
+  @@index([paymentStatus])
+}

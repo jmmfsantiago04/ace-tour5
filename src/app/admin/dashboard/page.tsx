@@ -8,6 +8,7 @@ import {
 } from '@/app/actions/admin'
 import { getNewsletterSubscriptions, deleteNewsletterSubscription } from '@/app/actions/newsletter'
 import { deleteInquiry } from '@/app/actions/admin/deleteInquiry'
+import { getAllBookings } from '@/app/actions/booking'
 import {
   Table,
   TableBody,
@@ -55,6 +56,7 @@ import { toast } from 'sonner'
 import { logout } from '@/app/actions/admin/logout'
 import { PasswordResetDialog } from '@/components/admin/PasswordResetDialog'
 import { useRouter } from 'next/navigation'
+import { BookingDialog } from '@/components/admin/BookingDialog'
 
 const statusConfig: Record<InquiryStatus, { label: string; icon: React.ReactNode; bg: string }> = {
   'PENDING': { 
@@ -77,11 +79,13 @@ const statusConfig: Record<InquiryStatus, { label: string; icon: React.ReactNode
 export default function DashboardPage() {
   const router = useRouter()
   const [selectedInquiry, setSelectedInquiry] = useState<SupportInquiry | null>(null)
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null)
   const [inquiries, setInquiries] = useState<SupportInquiry[]>([])
   const [faqs, setFaqs] = useState<any[]>([])
   const [miceCards, setMiceCards] = useState<any[]>([])
   const [reviews, setReviews] = useState<any[]>([])
   const [newsletters, setNewsletters] = useState<any[]>([])
+  const [bookings, setBookings] = useState<any[]>([])
   const [error, setError] = useState<string | null>(null)
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null)
   const [statusFilter, setStatusFilter] = useState<InquiryStatus | 'ALL'>('ALL')
@@ -89,27 +93,56 @@ export default function DashboardPage() {
   const [deletingNewsletter, setDeletingNewsletter] = useState<string | null>(null)
 
   const loadData = useCallback(async () => {
+    console.log('Starting to load dashboard data...');
     try {
-      const [inquiriesRes, faqsRes, miceCardsRes, reviewsRes, newslettersRes] = await Promise.all([
+      console.log('Fetching all data...');
+      const [inquiriesRes, faqsRes, miceCardsRes, reviewsRes, newslettersRes, bookingsRes] = await Promise.all([
         getSupportInquiries(),
         getFAQs(),
         getMiceCards(),
         getReviews(),
-        getNewsletterSubscriptions()
-      ])
+        getNewsletterSubscriptions(),
+        getAllBookings()
+      ]);
 
-      if (inquiriesRes.error || faqsRes.error || miceCardsRes.error || reviewsRes.error || newslettersRes.error) {
-        setError('Failed to load data')
-        return
+      console.log('Data fetch results:', {
+        inquiries: { success: !inquiriesRes.error, count: inquiriesRes.inquiries?.length },
+        faqs: { success: !faqsRes.error, count: faqsRes.data?.length },
+        miceCards: { success: !miceCardsRes.error, count: miceCardsRes.data?.length },
+        reviews: { success: !reviewsRes.error, count: reviewsRes.data?.length },
+        newsletters: { success: !newslettersRes.error, count: newslettersRes.subscriptions?.length },
+        bookings: { success: !bookingsRes.error, count: bookingsRes.data?.length }
+      });
+
+      if (inquiriesRes.error || faqsRes.error || miceCardsRes.error || reviewsRes.error || newslettersRes.error || bookingsRes.error) {
+        console.error('Errors in data fetching:', {
+          inquiries: inquiriesRes.error,
+          faqs: faqsRes.error,
+          miceCards: miceCardsRes.error,
+          reviews: reviewsRes.error,
+          newsletters: newslettersRes.error,
+          bookings: bookingsRes.error
+        });
+        setError('Failed to load data');
+        return;
       }
 
-      setInquiries(inquiriesRes.inquiries || [])
-      setFaqs(faqsRes.data || [])
-      setMiceCards(miceCardsRes.data || [])
-      setReviews(reviewsRes.data || [])
-      setNewsletters(newslettersRes.subscriptions || [])
-    } catch (err) {
-      setError('Failed to load data')
+      console.log('Setting state with fetched data...');
+      setInquiries(inquiriesRes.inquiries || []);
+      setFaqs(faqsRes.data || []);
+      setMiceCards(miceCardsRes.data || []);
+      setReviews(reviewsRes.data || []);
+      setNewsletters(newslettersRes.subscriptions || []);
+      setBookings(bookingsRes.data || []);
+      console.log('State updated successfully');
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Error in loadData:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      setError('Failed to load data');
     }
   }, [])
 
@@ -256,6 +289,7 @@ export default function DashboardPage() {
         <Tabs defaultValue="inquiries" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="inquiries">Support Inquiries</TabsTrigger>
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="faqs">FAQs</TabsTrigger>
             <TabsTrigger value="mice">MICE Cards</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
@@ -387,6 +421,86 @@ export default function DashboardPage() {
                                 )}
                               </Button>
                             )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Bookings Tab */}
+          <TabsContent value="bookings">
+            <div className="bg-white shadow rounded-lg overflow-hidden">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-medium text-gray-900">Bookings</h2>
+                </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="w-[150px]">Date</TableHead>
+                        <TableHead className="w-[150px]">Status</TableHead>
+                        <TableHead className="w-[200px]">Customer</TableHead>
+                        <TableHead className="w-[150px]">Trip Type</TableHead>
+                        <TableHead>Route</TableHead>
+                        <TableHead className="w-[100px]">Price</TableHead>
+                        <TableHead className="w-[150px]">Payment Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {bookings?.map((booking) => (
+                        <TableRow 
+                          key={booking.id} 
+                          className="hover:bg-gray-50 cursor-pointer"
+                          onClick={() => setSelectedBooking(booking)}
+                        >
+                          <TableCell className="whitespace-nowrap">
+                            {format(new Date(booking.createdAt), 'MMM d, yyyy')}
+                          </TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                              booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' : 
+                              booking.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {booking.status}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <div>
+                              <p className="font-medium">{booking.customerName || 'N/A'}</p>
+                              <a 
+                                href={`mailto:${booking.customerEmail}`}
+                                className="text-sm text-blue-600 hover:text-blue-800"
+                              >
+                                {booking.customerEmail}
+                              </a>
+                            </div>
+                          </TableCell>
+                          <TableCell>{booking.tripType}</TableCell>
+                          <TableCell>
+                            <div className="text-sm">
+                              <p>From: {booking.from}</p>
+                              <p>To: {booking.to}</p>
+                              <p className="text-gray-500">
+                                {format(new Date(booking.departingDate), 'MMM d, yyyy')} at {booking.departureTime}
+                              </p>
+                            </div>
+                          </TableCell>
+                          <TableCell>${booking.price}</TableCell>
+                          <TableCell>
+                            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                              booking.paymentStatus === 'PAID' ? 'bg-green-100 text-green-800' :
+                              booking.paymentStatus === 'FAILED' ? 'bg-red-100 text-red-800' :
+                              booking.paymentStatus === 'REFUNDED' ? 'bg-gray-100 text-gray-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {booking.paymentStatus}
+                            </span>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -639,6 +753,15 @@ export default function DashboardPage() {
             open={!!selectedInquiry}
             onOpenChange={(open) => !open && setSelectedInquiry(null)}
             onStatusChange={handleStatusChange}
+          />
+        )}
+
+        {/* Booking Dialog */}
+        {selectedBooking && (
+          <BookingDialog
+            booking={selectedBooking}
+            open={!!selectedBooking}
+            onOpenChange={(open) => !open && setSelectedBooking(null)}
           />
         )}
       </main>

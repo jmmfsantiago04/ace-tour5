@@ -32,7 +32,7 @@ export function Footer() {
 
   return (
     <div className={`flex justify-center w-full px-4 sm:px-6 lg:px-0 ${isOnSupportPage ? '-mt-[440px]' : 'bg-white'}`}>
-      <footer className="bg-[#1B365D] text-white w-full max-w-[1232px] min-h-[397px] rounded-[22px] pt-[60px] px-4 sm:px-6 lg:pl-[80px] relative overflow-hidden">
+      <footer className="bg-[#1B365D] mb-[15px] text-white w-full max-w-[1232px] min-h-[397px] rounded-[22px] pt-[60px] px-4 sm:px-6 lg:pl-[80px] relative overflow-hidden">
         {/* Pattern Background */}
         <div className="absolute w-full max-w-[981px] h-[564px] overflow-hidden left-1/2 -translate-x-1/2">
           <Image
@@ -46,20 +46,22 @@ export function Footer() {
         </div>
         <div className="relative z-[2] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[354px_139px_274px_152px] gap-8 lg:gap-x-[55px]">
           {/* Newsletter Section */}
-          <div className="w-full max-w-[354px] h-full">
-            <Image
-              src="/LogoWhite.png"
-              alt="ACE Tours Logo"
-              width={107}
-              height={55}
-              className="object-contain"
-            />
+          <div className="w-full max-w-[354px] h-full mx-auto text-center sm:text-left">
+            <div className="flex justify-center sm:justify-start">
+              <Image
+                src="/LogoWhite.png"
+                alt="ACE Tours Logo"
+                width={107}
+                height={55}
+                className="object-contain"
+              />
+            </div>
             <div className="mt-[15px]">
               <h3 className="font-black text-[20px] leading-[28px] tracking-[0%] text-[#FFFFFF80]">{t('newsletter.title')}</h3>
               <p className="font-medium mb-[15px] mt-[55px] text-[16px] leading-[24px] tracking-[0%] text-[#FFFFFF80]">
                 {t('newsletter.description')}
               </p>
-              <form action={formAction} className="relative w-full max-w-[328px] overflow-hidden rounded-[8px]">
+              <form action={formAction} className="relative w-full max-w-[328px] mx-auto sm:mx-0 overflow-hidden rounded-[8px]">
                 <input
                   type="email"
                   name="email"
@@ -77,9 +79,9 @@ export function Footer() {
           </div>
 
           {/* Sitemap Section */}
-          <div className="w-full max-w-[139px]">
+          <div className="w-full max-w-[139px] mx-auto text-center sm:text-left">
             <h3 className="font-semibold text-[16px] leading-[24px] tracking-[0%] mb-6">{t('sitemap.title')}</h3>
-            <nav className="flex flex-col gap-[24px]">
+            <nav className="flex flex-col items-center sm:items-start gap-[24px]">
               <Link href={`/${locale}`} className="block text-[#FFFFFF] opacity-70 hover:opacity-100 hover:text-white font-medium text-[14px] leading-[20px] tracking-[0px]">
                 {t('sitemap.home')}
               </Link>
@@ -99,8 +101,8 @@ export function Footer() {
           </div>
 
           {/* Contact Info Section */}
-          <div className="w-full max-w-[274px]">
-            <div className="flex items-start gap-[8px]">
+          <div className="w-full max-w-[274px] mx-auto flex flex-col items-center">
+            <div className="inline-flex items-start gap-[8px]">
               <div className="w-4 h-4 mt-[12px]">
                 <Image
                   src="/support/icons/clock-contact.png"
@@ -118,7 +120,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="flex items-start gap-[8px] mt-6">
+            <div className="inline-flex items-start gap-[8px] mt-6">
               <div className="w-4 h-4 mt-[12px]">
                 <Image
                   src="/support/icons/email-contact.png"
@@ -136,7 +138,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="flex items-start gap-[8px] mt-6">
+            <div className="inline-flex items-start gap-[8px] mt-6">
               <div className="w-4 h-4 mt-[12px]">
                 <Image
                   src="/support/icons/phone-contact.png"
@@ -156,9 +158,9 @@ export function Footer() {
           </div>
 
           {/* Social Links Section */}
-          <div className="w-full max-w-[152px]">
+          <div className="w-full max-w-[152px] mx-auto text-center sm:text-left">
             <h3 className="text-lg font-semibold mb-6">{t('social.title')}</h3>
-            <div className="flex gap-6">
+            <div className="flex gap-6 justify-center sm:justify-start">
               <a 
                 href="https://facebook.com" 
                 target="_blank" 
@@ -188,8 +190,8 @@ export function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-[30px] pt-[30px] border-t border-[#FFFFFF10] w-full flex items-center justify-end px-4 lg:pr-[40px]">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-[40px] items-center mb-[10px] opacity-70">
+        <div className="mt-[30px] pt-[30px] border-t border-[#FFFFFF10] w-full flex items-center justify-center lg:justify-end px-4 lg:pr-[40px]">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-[40px] items-center mb-[10px] opacity-70 text-center">
             <Link href={`/${locale}/privacy-policy`} className="text-[#FFFFFF50] hover:text-white hover:opacity-100">
               {t('legal.privacyPolicy')}
             </Link>

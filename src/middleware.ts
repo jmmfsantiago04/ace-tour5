@@ -6,8 +6,14 @@ export default createMiddleware(routing);
 export const config = {
   matcher: [
     // Match all pathnames except for
-    // - ... if they start with `/api`, `/trpc`, `/_next`, `/_vercel`, `/admin`
+    // - ... if they start with `/trpc`, `/_next`, `/_vercel`, `/admin`, or contain `/api/`
     // - ... the ones containing a dot (e.g. `favicon.ico`)
-    '/((?!api|trpc|_next|_vercel|admin|.*\\..*).*)'
+    '/((?!trpc|_next|_vercel|admin|.*\\..*).)*',
+    // Include locale-specific API routes
+    '/:locale/api/checkout',
+    // Include webhook endpoint
+    '/api/webhook',
+    // Redirect root to default locale
+    '/'
   ]
 }; 
